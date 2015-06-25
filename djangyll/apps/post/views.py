@@ -1,6 +1,7 @@
 from django.views.generic import View
-from utils.response import JsonResponse
-from .models import Reader
+from utils.response import JsonResponse, JsonResponseNotFound, JsonResponseBadRequest
+from .models import Reader, BadFile
+from utils.file_system import NotExistsException
 
 
 class PostView(View):
@@ -18,6 +19,11 @@ class PostView(View):
         if not post_id:
             response['data'] = reader.list()
         else:
-            response['data'] = reader.read(post_id)
+            try:
+                response['data'] = reader.read(post_id)
+            except NotExistsException, exc:
+                return JsonResponseNotFound(exc.message)
+            except BadFile, exc:
+                return JsonResponseBadRequest(exc.message)
 
         return JsonResponse(response)

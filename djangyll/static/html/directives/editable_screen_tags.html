@@ -1,0 +1,32 @@
+<label>Screens: </label>
+
+<span class="screen-tag-name"
+      ng-hide="editMode"
+      ng-repeat="screen in screens">{$ screen $}, </span>
+
+<a ng-hide="editMode"
+   ng-click="toggleEditMode()">edit</a>
+
+<span class="form-inline add-new-tags"
+      ng-show="editMode">
+    <ui-select multiple
+               tagging="tagging"
+               tagging-label="false"
+               reset-search-input="true"
+               ng-model="$parent.screens">
+        <ui-select-match placeholder="Type screen name">{$ $item.name $}</ui-select-match>
+        <ui-select-choices repeat="tag.name as tag in available | filter:$select.search">
+            {$ tag.name $}
+        </ui-select-choices>
+    </ui-select>
+</span>
+
+<span class="btn-group-sm"
+      ng-show="editMode">
+    <button class="btn btn-success" ng-click="save()">
+        <span class="glyphicon glyphicon-ok"></span>
+    </button>
+    <button class="btn btn-warning" ng-click="reset()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+</span>

@@ -13,3 +13,6 @@ class FileSystemInterface(object):
 
     def move(self, source, destination):
         pass
+
+class NotExistsException(Exception):
+    pass

@@ -1,0 +1,133 @@
+.applications {
+    padding: 0;
+}
+
+.applications .jumbotron {
+    padding: 20px;
+    width: 300px;
+    height: 300px;
+    display: inline-block;
+    margin: 20px;
+    vertical-align: top;
+    border: solid 1px transparent;
+    position: relative;
+}
+
+.applications .jumbotron .logo {
+    height: 100px;
+    font-size: 90px;
+    color: #337ab7;
+}
+
+.applications .jumbotron:hover {
+    border-color: #88cffc;
+}
+
+.applications .jumbotron p {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.applications a.container {
+    text-decoration: none;
+    color: #333333;
+}
+
+.applications .container .title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    color: #23527c;
+}
+
+.applications .container:hover .title {
+    color: #337ab7;
+}
+
+.applications .container .info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.applications .container .info > * {
+    margin: 0 0 10px 0;
+}
+
+.applications .jumbotron.creating {
+    cursor: pointer;
+}
+
+.applications .jumbotron.creating > * {
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+    opacity: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+}
+
+.applications .jumbotron.creating > *.ng-hide {
+    opacity: 0;
+}
+
+.applications .jumbotron.creating.active {
+    cursor: inherit;
+}
+
+.applications .jumbotron:hover.creating.active {
+    border-color: transparent;
+}
+
+.applications .jumbotron.creating .hint {
+    margin-top: 50px;
+}
+
+.applications .create-form-container .form-group {
+    margin-top: 20px;
+}
+
+.applications .jumbotron.creating .form-group .dropdown-menu {
+    width: inherit;
+}
+
+.applications .create-form-container .btn.cancel {
+    float: left;
+}
+
+.applications .create-form-container .btn.create {
+    float: right;
+}
+
+.applications .jumbotron.container.ng-enter,
+.applications .jumbotron.container.ng-leave,
+.applications .jumbotron.container.ng-move {
+    -webkit-transition: 0.5s linear all;
+    -moz-transition: 0.5s linear all;
+    -o-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+}
+
+.applications .jumbotron.container.ng-enter,
+.applications .jumbotron.container.ng-move {
+    opacity: 0;
+    overflow: hidden;
+}
+
+.applications .jumbotron.container.ng-move.ng-move-active,
+.applications .jumbotron.container.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
+.applications .jumbotron.container.ng-leave {
+    opacity: 1;
+    overflow: hidden;
+}
+
+.applications .jumbotron.container.ng-leave.ng-leave-active {
+    opacity: 0;
+}

@@ -1,0 +1,9 @@
+- fields: {title: Direct}
+  model: config.filesystem
+  pk: 1
+- fields: {title: FTP}
+  model: config.filesystem
+  pk: 2
+- fields: {title: SSH}
+  model: config.filesystem
+  pk: 3

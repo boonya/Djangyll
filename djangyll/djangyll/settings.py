@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'apps.config',
     'apps.post',
+    'apps.backoffice',
 )
 
 MIDDLEWARE_CLASSES = (

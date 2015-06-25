@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h3 class="modal-title">{$ error.status $} {$ error.statusText $}</h3>
+</div>
+<div class="modal-body">
+    <ul ng-show="error.data.reasons">
+        <li ng-repeat="reason in error.data.reasons">{$ reason $}</li>
+    </ul>
+    <pre ng-show="error.data && !error.data.reasons">{$ error.data $}</pre>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary"
+            ng-click="close()">OK
+    </button>
+</div>

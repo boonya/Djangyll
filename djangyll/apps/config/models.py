@@ -25,3 +25,10 @@ class FileSystem(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Option(models.Model):
+    title = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.title

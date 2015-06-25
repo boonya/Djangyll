@@ -1,16 +1,20 @@
 Clone project:
 `git clone git@github.com:boonya/Djangyll.git`
 
-Install pip:
-
-
 Install all requirements:
 `pip install -r requirements.txt`
 
 Configure DB...
+`brew install postgres`
+`postgres -D /usr/local/var/postgres`
+`createuser djangyll`
+`createdb djangyll owner djangyll`
+
+Create migrations:
+`./manage.py makemigrations`
 
 Apply migrations:
-`./djangyll/manage.py migrate`
+`./manage.py migrate`
 
 Create superuser:
-`./djangyll/manage.py createsuperuser`
+`./manage.py createsuperuser`

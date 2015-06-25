@@ -1,0 +1,17 @@
+{
+  "name": "Djangyll",
+  "version": "0.0.1",
+  "homepage": "https://github.com/boonya/Djangyll",
+  "authors": [
+    "Sergii boonya Buinytskyi <boonya41@gmail.com>"
+  ],
+  "description": "Content Management System for Jekyll based static web sites.",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

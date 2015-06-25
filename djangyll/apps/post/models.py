@@ -1,13 +1,15 @@
 from utils.direct_fs import DirectFs
 import yaml
 import re
+from bs4 import BeautifulSoup
+import markdown
 
 
 class Reader(object):
     file_system = None
 
     def __init__(self):
-        self.file_system = DirectFs('/Users/boonya/Documents/codebase/miks.org.ua/jekyll-version/src/_posts')
+        self.file_system = DirectFs('/Users/boonya/Documents/miks/jekyll-static/src/_posts')
 
     def list(self):
         """
@@ -29,12 +31,16 @@ class Reader(object):
         entries = re.split("---\n+", raw_data)
 
         if not 3 == len(entries):
-            raise Exception("The content of '%s' is invalid." % post_id)
+            raise BadFile("The content of '%s' is invalid." % post_id)
 
         meta = yaml.load(entries[1])
-        body = entries[2]
+        body = markdown.markdown(unicode(entries[2], "utf-8"))
 
         return {
             'meta': meta,
             'body': body
         }
+
+
+class BadFile(Exception):
+    pass

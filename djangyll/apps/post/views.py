@@ -1,6 +1,8 @@
 from django.views.generic import View
-from utils.response import JsonResponse
-from .models import Reader
+import html2text
+from utils.response import JsonResponse, JsonResponseNotFound, JsonResponseBadRequest
+from .models import Reader, BadFile
+from utils.file_systems.interface import NotExistsException
 
 
 class PostView(View):
@@ -11,13 +13,20 @@ class PostView(View):
     def get(self, request, post_id=None, *args, **kwargs):
         reader = Reader()
 
-        response = {
-            'data': None
-        }
+        response = {'data': []}
 
         if not post_id:
             response['data'] = reader.list()
         else:
-            response['data'] = reader.read(post_id)
+            try:
+                response['data'] = reader.read(post_id)
+
+                if 'html_to_md' == request.GET.get('convert', None):
+                    response['data']['body'] = html2text.html2text(response['data']['body'])
+
+            except NotExistsException, exc:
+                return JsonResponseNotFound(exc.message)
+            except BadFile, exc:
+                return JsonResponseBadRequest(exc.message)
 
         return JsonResponse(response)

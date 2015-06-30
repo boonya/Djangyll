@@ -1,9 +1,10 @@
-from utils.file_system import FileSystemInterface
 from os import listdir
 from os.path import isfile, join, isdir, exists
 
+from utils.file_systems.interface import FileSystemInterface, NotExistsException
 
-class DirectFs(FileSystemInterface):
+
+class Direct(FileSystemInterface):
     container = None
 
     def __init__(self, container):
@@ -21,7 +22,12 @@ class DirectFs(FileSystemInterface):
         return [f for f in listdir(self.container) if isfile(join(self.container, f))]
 
     def read(self, name):
-        fh = open(self.container + '/' + name, 'r')
+        file_path = self.container + '/' + name
+
+        if not exists(file_path) or not isfile(file_path):
+            raise NotExistsException("'%s' is unknown file." % name)
+
+        fh = open(file_path, 'r')
         data = fh.read()
         fh.close()
         return data

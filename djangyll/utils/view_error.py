@@ -12,7 +12,7 @@ class ViewMiddleware(object):
 
     def process_response(self, request, response):
         response_class = self.codes_mapping.get(response.status_code, None)
-        if response_class:
+        if response_class and callable(response_class):
             response = response_class(response.reason_phrase)
 
         return response

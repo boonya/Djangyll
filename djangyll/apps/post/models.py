@@ -1,15 +1,23 @@
-from utils.direct_fs import DirectFs
-import yaml
 import re
-from bs4 import BeautifulSoup
+
+import yaml
 import markdown
+
+from utils.file_systems.direct import Direct
+from apps.config.models import WebSite
 
 
 class Reader(object):
     file_system = None
 
     def __init__(self):
-        self.file_system = DirectFs('/Users/boonya/Documents/miks/jekyll-static/src/_posts')
+        web_site = WebSite.objects.get(pk=1)
+        # fs = web_site.file_system
+        options = web_site.opt_values.all()
+        path = options[0].value
+        # path = '/Users/boonya/Documents/codebase/miks.org.ua/jekyll-version/src/_posts'
+
+        self.file_system = Direct(path)
 
     def list(self):
         """

@@ -1,9 +1,10 @@
-from utils.file_system import FileSystemInterface, NotExistsException
 from os import listdir
 from os.path import isfile, join, isdir, exists
 
+from utils.file_systems.interface import FileSystemInterface, NotExistsException
 
-class DirectFs(FileSystemInterface):
+
+class Direct(FileSystemInterface):
     container = None
 
     def __init__(self, container):

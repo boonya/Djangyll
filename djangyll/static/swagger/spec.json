@@ -1,0 +1,105 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Djangyll App",
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    },
+    "version": "1.0.1"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/post": {
+      "get": {
+        "description": "Returns all posts.",
+        "responses": {
+          "200": {
+            "description": "A list of posts.",
+            "schema": {
+              "$ref": "#/definitions/PostList"
+            }
+          },
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    },
+    "/post/{post_id}": {
+      "get": {
+        "description": "Returns concrete post.",
+        "parameters": [
+          {
+            "name": "post_id",
+            "in": "path",
+            "description": "ID of post",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One post.",
+            "$ref": "#/definitions/PostModel"
+          },
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ErrorModel": {
+      "description": "Error response",
+      "schema": {
+        "type": "object",
+        "example": {
+          "reasons": [
+            "ERROR REASON"
+          ]
+        }
+      }
+    },
+    "PostList": {
+      "description": "Listing of posts",
+      "schema": {
+        "type": "array",
+        "example": [
+          "2010-10-25-about.markdown",
+          "2010-10-26-contacts.markdown",
+          "2010-10-27-first-project.markdown"
+        ]
+      }
+    },
+    "PostModel": {
+      "description": "Post",
+      "schema": {
+        "type": "object",
+        "example": {
+          "meta": {
+            "category": "Uncategorised",
+            "permalink": "/about.html",
+            "layout": "post",
+            "language": "uk-UA",
+            "title": "Про нас",
+            "cat_slug": "uncategorised",
+            "featured": 0,
+            "date": "2010-10-25T19:00:00",
+            "slug": "about"
+          },
+          "body": "string"
+        }
+      }
+    }
+  }
+}

@@ -41,6 +41,13 @@
             "description": "ID of post",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "convert",
+            "in": "query",
+            "description": "Request to convert body of post. E.g. `html_to_md`",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {

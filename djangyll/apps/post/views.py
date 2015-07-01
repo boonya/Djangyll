@@ -13,20 +13,20 @@ class PostView(View):
     def get(self, request, post_id=None, *args, **kwargs):
         reader = Reader(site_id=1)
 
-        response = {'data': []}
-
         if not post_id:
-            response['data'] = reader.list()
-        else:
-            try:
-                response['data'] = reader.read(post_id)
+            return JsonResponse(reader.list())
 
-                if 'html_to_md' == request.GET.get('convert', None):
-                    response['data']['body'] = html2text.html2text(response['data']['body'])
+        try:
+            data = reader.read(post_id)
 
-            except NotExistsException, exc:
-                return JsonResponseNotFound(exc.message)
-            except BadFile, exc:
-                return JsonResponseBadRequest(exc.message)
+            if 'html_to_md' == request.GET.get('convert', None):
+                data['body'] = html2text.html2text(data['body'])
 
-        return JsonResponse(response)
+            return JsonResponse(data)
+
+        except NotExistsException, exc:
+            return JsonResponseNotFound(exc.message)
+
+        except BadFile, exc:
+            return JsonResponseBadRequest(exc.message)
+

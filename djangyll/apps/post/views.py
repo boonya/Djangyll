@@ -11,7 +11,7 @@ class PostView(View):
     """
 
     def get(self, request, post_id=None, *args, **kwargs):
-        reader = Reader()
+        reader = Reader(site_id=1)
 
         response = {'data': []}
 

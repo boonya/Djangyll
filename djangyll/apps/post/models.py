@@ -10,8 +10,8 @@ from apps.config.models import WebSite
 class Reader(object):
     file_system = None
 
-    def __init__(self):
-        web_site = WebSite.objects.get(pk=1)
+    def __init__(self, site_id):
+        web_site = WebSite.objects.get(pk=site_id)
         # fs = web_site.file_system
         options = web_site.opt_values.all()
         path = options[0].value

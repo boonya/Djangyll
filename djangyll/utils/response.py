@@ -2,7 +2,8 @@ from django.http import JsonResponse as BaseJsonResponse
 
 
 class JsonResponse(BaseJsonResponse):
-    pass
+    def __init__(self, data, **kwargs):
+        super(JsonResponse, self).__init__(data, safe=False, **kwargs)
 
 
 class JsonBaseError(BaseJsonResponse):

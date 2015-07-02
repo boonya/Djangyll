@@ -14,6 +14,7 @@
   "paths": {
     "/post": {
       "get": {
+        "tags": ["Post"],
         "description": "Returns all posts.",
         "responses": {
           "200": {
@@ -33,6 +34,7 @@
     },
     "/post/{post_id}": {
       "get": {
+        "tags": ["Post"],
         "description": "Returns concrete post.",
         "parameters": [
           {

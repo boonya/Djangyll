@@ -14,7 +14,9 @@ Configure DB...
 
 - `createuser djangyll`
 
-- `createdb djangyll owner djangyll`
+- `createdb --owner=djangyll djangyll`
+
+- `createdb --owner=djangyll test_djangyll`
 
 Create migrations:
 

@@ -49,6 +49,12 @@ class Reader(object):
             'body': body
         }
 
+    def save(self):
+        raise NotImplementedError('Not implemented yet.')
+
+    def update(self):
+        raise NotImplementedError('Not implemented yet.')
+
 
 class BadFile(Exception):
     pass

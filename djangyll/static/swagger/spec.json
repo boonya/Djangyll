@@ -11,11 +11,19 @@
   "produces": [
     "application/json"
   ],
+  "tags": [
+    {
+      "name": "post",
+      "description": "Everything about your Posts"
+    }
+  ],
   "paths": {
     "/post": {
       "get": {
-        "tags": ["Post"],
-        "description": "Returns all posts.",
+        "tags": [
+          "post"
+        ],
+        "summary": "Get listing of posts.",
         "responses": {
           "200": {
             "description": "A list of posts.",
@@ -30,12 +38,130 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Create new post.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "Uncategorised"
+          },
+          {
+            "name": "permalink",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "/about.html"
+          },
+          {
+            "name": "layout",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "post"
+          },
+          {
+            "name": "language",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "uk-UA"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "Про нас"
+          },
+          {
+            "name": "cat_slug",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "uncategorised"
+          },
+          {
+            "name": "featured",
+            "in": "formData",
+            "required": true,
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "date",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "format": "date-time",
+            "default": "2010-10-25T19:00:00"
+          },
+          {
+            "name": "slug",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "default": "about"
+          },
+          {
+            "name": "body",
+            "in": "formData",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Bulk update of posts.",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Bulk delete of posts.",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
       }
     },
     "/post/{post_id}": {
       "get": {
-        "tags": ["Post"],
-        "description": "Returns concrete post.",
+        "tags": [
+          "post"
+        ],
+        "summary": "Get concrete post.",
         "parameters": [
           {
             "name": "post_id",
@@ -57,6 +183,36 @@
             "description": "One post.",
             "$ref": "#/definitions/PostModel"
           },
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Update concrete post.",
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "error payload",
+            "schema": {
+              "$ref": "#/definitions/ErrorModel"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Delete concrete post.",
+        "parameters": [],
+        "responses": {
           "default": {
             "description": "error payload",
             "schema": {

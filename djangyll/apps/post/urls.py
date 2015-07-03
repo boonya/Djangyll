@@ -2,11 +2,10 @@
 Post CRUD urls.
 """
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from .views import PostView
 
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^(?P<post_id>.*)/?$', PostView.as_view(), name='post-view')
-)
+]

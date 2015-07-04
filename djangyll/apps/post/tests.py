@@ -33,6 +33,11 @@ class TestPostView(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertEqual(json.dumps(mocked_response), response.content)
 
+        response = self.client.get('/post/')
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(json.dumps(mocked_response), response.content)
+
     def test_get_one(self):
         """Test coverage for get one post."""
         mocked_response = {'some': 'data'}
@@ -50,7 +55,7 @@ class TestPostView(TestCase):
 
         self.mocked_reader.save.return_value = mocked_response
 
-        response = self.client.post('/post', {'some': 'data'})
+        response = self.client.post('/post', {'content': 'data'})
 
         self.assertEqual(200, response.status_code)
         self.assertEqual(json.dumps(mocked_response), response.content)

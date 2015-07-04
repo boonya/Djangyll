@@ -1,34 +1,39 @@
+"""Model of post module."""
 import re
-
 import yaml
 import markdown
 
-from utils.file_systems.direct import Direct
-from apps.config.models import WebSite
-
 
 class Reader(object):
+
+    """Files reader class."""
+
     file_system = None
 
     def __init__(self):
-        # web_site = WebSite.objects.get(pk=1)
-        # options = web_site.opt_values.all()
-        # path = options[0].value
-        path = '/Users/boonya/Documents/codebase/miks.org.ua/jekyll-version/src/_posts'
+        """Simple Constructor.
 
+        It should prepare object of adapter for FS which was preselected for
+        current site.
+        :return:
+        """
+        # Dunno why, but this import string does not work
+        # with PyCharm test runner if it place in the head of file.
+        from utils.file_systems.direct import Direct
+
+        # TODO: Do something with this shit. It have to be customizable with Django admin or some settings.
+        path = '/Users/boonya/Documents/codebase/miks.org.ua/jekyll-version/src/_posts'
         self.file_system = Direct(path)
 
     def list(self):
-        """
-        Returns listing of post`s names.
+        """Return listing of files`s names.
 
         :return list:
         """
         return self.file_system.list()
 
     def read(self, post_id):
-        """
-        Returns metadata & content of post.
+        """Return metadata & content of post.
 
         :param string post_id:
         :return dict:
@@ -48,12 +53,33 @@ class Reader(object):
             'body': body
         }
 
-    def save(self):
+    def save(self, **kwargs):
+        """Create new file of article.
+
+        :param kwargs:
+        :return dict:
+        """
         raise NotImplementedError('Not implemented yet.')
 
-    def update(self):
+    def update(self, post_id, **kwargs):
+        """Update file of article.
+
+        :param string post_id:
+        :param kwargs:
+        :return dict:
+        """
         raise NotImplementedError('Not implemented yet.')
 
 
 class BadFile(Exception):
-    pass
+
+    """Special exception for this module."""
+
+    def __init__(self, *args, **kwargs):
+        """Just constructor.
+
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        super(BadFile, self).__init__(args, kwargs)

@@ -7,8 +7,8 @@ class Direct(FileSystemInterface):
     container = None
 
     def __init__(self, container):
-        """
-        Constructor.
+        """Constructor.
+
         :param string container:
         :return:
         """

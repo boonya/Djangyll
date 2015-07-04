@@ -1,4 +1,4 @@
-"""Test cases for post module."""
+"""Test cases for post views."""
 
 from django.test import TestCase
 import mock
@@ -7,7 +7,7 @@ import json
 
 class TestPostView(TestCase):
 
-    """Test cases for post.view."""
+    """Test cases for PostView."""
 
     def setUp(self):
         """Start patching objects."""

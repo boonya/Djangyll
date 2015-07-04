@@ -1,29 +1,27 @@
+"""Post view."""
 from django.views.generic import View
-import html2text
 from utils.response import JsonResponse, JsonResponseNotFound, JsonResponseBadRequest
-from .models import Reader, BadFile
 from utils.file_systems.interface import NotExistsException
+from .models import Reader, BadFile
 
 
 class PostView(View):
-    """
-    Configurations CRUD
-    """
-    reader = Reader(site_id=1)
+
+    """Configurations CRUD."""
+
+    reader = None
+
+    def __init__(self):
+        super(PostView, self).__init__()
+        self.reader = Reader()
 
     def get(self, request, post_id=None, *args, **kwargs):
-        """
-        Get request handler for getting listing of posts or data of concrete post.
-        """
-
-        if not post_id:
-            return JsonResponse(self.reader.list())
-
+        """Get request handler for getting listing of posts or data of concrete post."""
         try:
-            data = self.reader.read(post_id)
-
-            if 'html_to_md' == request.GET.get('convert', None):
-                data['body'] = html2text.html2text(data['body'])
+            if post_id:
+                data = self.reader.read(post_id)
+            else:
+                data = self.reader.list()
 
             return JsonResponse(data)
 
@@ -34,25 +32,19 @@ class PostView(View):
             return JsonResponseBadRequest(exc.message)
 
     def post(self, request, *args, **kwargs):
-        """
-        Post request handler for creating new posts.
-        """
+        """Post request handler for creating new posts."""
 
-        data = request.POST
+        data = request.body
         return JsonResponse(data)
 
     def put(self, request, post_id=None, *args, **kwargs):
-        """
-        Put request handler for bulk update posts or concrete post.
-        """
+        """Put request handler for bulk update posts or concrete post."""
 
-        data = request.POST
+        data = request.body
         return JsonResponse(data)
 
     def delete(self, request, post_id=None, *args, **kwargs):
-        """
-        Delete request handler for bulk delete posts or concrete post.
-        """
+        """Delete request handler for bulk delete posts or concrete post."""
 
-        data = request.POST
+        data = request.body
         return JsonResponse(data)

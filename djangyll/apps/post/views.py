@@ -3,6 +3,7 @@ from django.views.generic import View
 from utils.response import JsonResponse, JsonResponseNotFound, JsonResponseBadRequest
 from utils.file_systems.interface import NotExistsException
 from .models import Reader, BadFile
+import reasons
 
 
 class PostView(View):
@@ -25,11 +26,11 @@ class PostView(View):
 
             return JsonResponse(data)
 
-        except NotExistsException, exc:
-            return JsonResponseNotFound(exc.message)
+        except NotExistsException:
+            return JsonResponseNotFound(reasons.DOES_NOT_EXIST)
 
-        except BadFile, exc:
-            return JsonResponseBadRequest(exc.message)
+        except BadFile:
+            return JsonResponseBadRequest(reasons.BAD_FILE)
 
     def post(self, request, *args, **kwargs):
         """Post request handler for creating new posts."""
@@ -39,12 +40,16 @@ class PostView(View):
 
     def put(self, request, post_id=None, *args, **kwargs):
         """Put request handler for bulk update posts or concrete post."""
+        if not post_id and not request.POST.get('id', None):
+            return JsonResponseBadRequest(reasons.NO_ID)
 
         data = request.POST
         return JsonResponse(data)
 
     def delete(self, request, post_id=None, *args, **kwargs):
         """Delete request handler for bulk delete posts or concrete post."""
+        if not post_id and not request.POST.get('id', None):
+            return JsonResponseBadRequest(reasons.NO_ID)
 
         data = request.POST
         return JsonResponse(data)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
-"""Model of post module."""
+"""Model of posts."""
 import re
 import yaml
 import markdown
@@ -62,6 +62,15 @@ class Post(object):
 
     def update(self, post_id, **kwargs):
         """Update file of article.
+
+        :param string post_id:
+        :param kwargs:
+        :return dict:
+        """
+        raise NotImplementedError('Not implemented yet.')
+
+    def delete(self, post_id, **kwargs):
+        """Delete file of article.
 
         :param string post_id:
         :param kwargs:

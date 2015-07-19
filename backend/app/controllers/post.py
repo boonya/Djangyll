@@ -2,6 +2,7 @@ __author__ = 'boonya'
 import json
 from app import app
 from app.models.post import Post
+from flask import request
 from app.utils.response import Response
 from app.reasons import errors
 from app.utils.fs.exception import NotExistsException
@@ -9,6 +10,10 @@ from app.utils.fs.exception import NotExistsException
 
 @app.route('/post', methods=['GET'])
 def listing():
+    """Get listing.
+
+    :return:
+    """
     post = Post()
     posts = post.list()
 
@@ -17,6 +22,11 @@ def listing():
 
 @app.route('/post/<post_id>', methods=['GET'])
 def get(post_id):
+    """Get concrete post.
+
+    :param str post_id:
+    :return:
+    """
     post = Post()
 
     try:
@@ -29,24 +39,46 @@ def get(post_id):
 
 @app.route('/post', methods=['POST'])
 def create():
-    return "Create post"
+    """Create new post.
+
+    :return:
+    """
+    return Response.success(json.dumps("Create post.\n"))
 
 
-@app.route('/post<post_id>', methods=['PUT'])
+@app.route('/post/<post_id>', methods=['PUT'])
 def update(post_id):
-    return "Update post: %s.\n" % post_id
+    """Update concrete post.
+
+    :param str post_id:
+    :return:
+    """
+    return Response.success(json.dumps("Update post: %s.\n" % post_id))
 
 
 @app.route('/post/<post_id>', methods=['DELETE'])
 def delete(post_id):
-    return "Delete post: %s.\n" % post_id
+    """Delete concrete post.
+
+    :param str post_id:
+    :return:
+    """
+    return Response.success(json.dumps("Delete post: %s.\n" % post_id))
 
 
 @app.route('/post', methods=['PUT'])
 def bulk_update():
-    return "Bulk update"
+    """Bulk update.
+
+    :return:
+    """
+    return Response.success(json.dumps("Bulk update"))
 
 
 @app.route('/post', methods=['DELETE'])
 def bulk_delete():
-    return "Bulk delete"
+    """Bulk delete.
+
+    :return:
+    """
+    return Response.success(json.dumps("Bulk delete"))

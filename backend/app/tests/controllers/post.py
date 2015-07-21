@@ -9,7 +9,7 @@ import mock
 import json
 
 
-class TestCase(unittest.TestCase):
+class CtrlPostTestCase(unittest.TestCase):
     """Test cases for PostView."""
 
     client = app.test_client()

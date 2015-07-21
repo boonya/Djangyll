@@ -5,6 +5,7 @@ import re
 import yaml
 import markdown
 from app.utils.fs.direct import Direct
+from app.config.common import posts_path
 
 
 class Post(object):
@@ -21,8 +22,7 @@ class Post(object):
         """
 
         # TODO: Do something with this shit. It have to be customizable with some settings.
-        path = '/Users/boonya/Documents/codebase/miks.org.ua/jekyll-version/src/_posts'
-        self.file_system = Direct(path)
+        self.file_system = Direct(posts_path)
 
     def list(self):
         """Return listing of files`s names.

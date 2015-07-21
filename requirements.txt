@@ -1,6 +1,0 @@
-Django==1.8.2
-psycopg2==2.6
-PyYAML==3.11
-html2text==2015.6.21
-Markdown==2.6.2
-Mock==1.0.1

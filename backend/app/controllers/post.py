@@ -2,7 +2,7 @@ __author__ = 'boonya'
 import json
 from app import app
 from app.models.post import Post
-from flask import request
+from app.utils.request import Request
 from app.utils.response import Response
 from app.reasons import errors
 from app.utils.fs.exception import NotExistsException
@@ -12,10 +12,14 @@ from app.utils.fs.exception import NotExistsException
 def listing():
     """Get listing.
 
-    :return:
+    :return list:
     """
     post = Post()
-    posts = post.list()
+
+    try:
+        posts = post.list()
+    except Exception:
+        return Response.failure(errors.UNKNOWN, 500)
 
     return Response.success(json.dumps(posts))
 
@@ -25,7 +29,7 @@ def get(post_id):
     """Get concrete post.
 
     :param str post_id:
-    :return:
+    :return dict:
     """
     post = Post()
 
@@ -33,6 +37,8 @@ def get(post_id):
         post = post.read(post_id)
     except NotExistsException:
         return Response.failure(errors.DOES_NOT_EXIST, 404)
+    except Exception:
+        return Response.failure(errors.UNKNOWN, 500)
 
     return Response.success(json.dumps(post))
 
@@ -41,9 +47,16 @@ def get(post_id):
 def create():
     """Create new post.
 
-    :return:
+    :return dict:
     """
-    return Response.success(json.dumps("Create post.\n"))
+    post = Post()
+
+    try:
+        response = post.save(Request.dict())
+    except Exception:
+        return Response.failure(errors.UNKNOWN, 500)
+
+    return Response.success(json.dumps(response))
 
 
 @app.route('/post/<post_id>', methods=['PUT'])
@@ -51,9 +64,18 @@ def update(post_id):
     """Update concrete post.
 
     :param str post_id:
-    :return:
+    :return dict:
     """
-    return Response.success(json.dumps("Update post: %s.\n" % post_id))
+    post = Post()
+
+    try:
+        response = post.update(post_id, Request.dict())
+    except NotExistsException:
+        return Response.failure(errors.DOES_NOT_EXIST, 404)
+    except Exception:
+        return Response.failure(errors.UNKNOWN, 500)
+
+    return Response.success(json.dumps(response))
 
 
 @app.route('/post/<post_id>', methods=['DELETE'])
@@ -61,16 +83,25 @@ def delete(post_id):
     """Delete concrete post.
 
     :param str post_id:
-    :return:
+    :return dict:
     """
-    return Response.success(json.dumps("Delete post: %s.\n" % post_id))
+    post = Post()
+
+    try:
+        response = post.delete(post_id)
+    except NotExistsException:
+        return Response.failure(errors.DOES_NOT_EXIST, 404)
+    except Exception:
+        return Response.failure(errors.UNKNOWN, 500)
+
+    return Response.success(json.dumps(response))
 
 
 @app.route('/post', methods=['PUT'])
 def bulk_update():
     """Bulk update.
 
-    :return:
+    :return list:
     """
     return Response.success(json.dumps("Bulk update"))
 
@@ -79,6 +110,6 @@ def bulk_update():
 def bulk_delete():
     """Bulk delete.
 
-    :return:
+    :return list:
     """
     return Response.success(json.dumps("Bulk delete"))

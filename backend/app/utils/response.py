@@ -5,15 +5,16 @@ import json
 
 
 class Response(object):
+
     """Response wrapper helper."""
 
     @staticmethod
     def success(data, code=200):
-        """Returns success ful response.
+        """Returns successful response.
 
         :param str body:
         :param int code:
-        :return:
+        :return ResponseBase:
         """
         response = make_response(data, code)
         response.headers['Content-Type'] = 'application/json'
@@ -25,7 +26,7 @@ class Response(object):
 
         :param str reason:
         :param int code:
-        :return:
+        :return ResponseBase:
         """
         response = make_response(json.dumps({"error": reason}), code)
         response.headers['Content-Type'] = 'application/json'

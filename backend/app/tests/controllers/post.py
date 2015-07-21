@@ -34,37 +34,33 @@ class TestCase(unittest.TestCase):
 
     @mock.patch('app.models.post.Post.save')
     def test_create(self, mocked):
-        mocked_response = {}
-        mocked.return_value = mocked_response
-        data = {
-            'title': 'some title',
-            'content': 'some content'
-        }
+        mocked.return_value = {}
 
-        response = self.client.post('/post', data=data)
+        response = self.client.post('/post', data={})
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
-        self.assertEqual(json.loads(response.data), mocked_response)
 
     @mock.patch('app.models.post.Post.update')
     def test_update(self, mocked):
-        mocked_response = {}
-        mocked.return_value = mocked_response
+        mocked.return_value = {}
 
         response = self.client.put('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
-        self.assertEqual(json.loads(response.data), mocked_response)
 
     @mock.patch('app.models.post.Post.delete')
     def test_delete(self, mocked):
-        mocked_response = {}
-        mocked.return_value = mocked_response
+        mocked.return_value = {}
 
         response = self.client.delete('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
-        self.assertEqual(json.loads(response.data), mocked_response)
+
+    def test_bulk_update(self):
+        self.skipTest("'test_bulk_update' is not implemented yet.")
+
+    def test_bulk_delete(self):
+        self.skipTest("'test_bulk_delete' is not implemented yet.")

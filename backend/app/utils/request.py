@@ -22,5 +22,4 @@ class Request(object):
         :return dict:
         """
         return dict(
-            (key, request.form.get(key, None)) for key in request.form.keys()
-        )
+            (key, request.form.get(key, None)) for key in request.form.keys())

@@ -4,8 +4,7 @@ __author__ = 'boonya'
 import re
 import yaml
 import markdown
-from app.utils.fs.direct import Direct
-from app.config.common import posts_path
+from app.utils.fs import Fs
 
 
 class Post(object):
@@ -21,8 +20,7 @@ class Post(object):
         :return:
         """
 
-        # TODO: Do something with this shit. It have to be customizable with some settings.
-        self.file_system = Direct(posts_path)
+        self.file_system = Fs.get()
 
     def list(self):
         """Return listing of files`s names.

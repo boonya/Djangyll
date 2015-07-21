@@ -58,12 +58,30 @@ class ModelPostTestCase(unittest.TestCase):
 
     def test_save(self):
         """Test for save method."""
-        self.skipTest("save is not implemented yet.")
+        self.mocked_post.file_system.write.return_value = ""
+
+        result = self.mocked_post.save(data='data')
+
+        self.assertIsInstance(result, dict)
+        self.assertIn("meta", result)
+        self.assertIn("body", result)
 
     def test_update(self):
         """Test for update method."""
-        self.skipTest("update is not implemented yet.")
+        self.mocked_post.file_system.write.return_value = ""
+
+        result = self.mocked_post.update('post-id', data='data')
+
+        self.assertIsInstance(result, dict)
+        self.assertIn("meta", result)
+        self.assertIn("body", result)
 
     def test_delete(self):
         """Test for delete method."""
-        self.skipTest("delete is not implemented yet.")
+        self.mocked_post.file_system.remove.return_value = ""
+
+        result = self.mocked_post.delete('post-id')
+
+        self.assertIsInstance(result, dict)
+        self.assertIn("meta", result)
+        self.assertIn("body", result)

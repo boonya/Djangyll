@@ -7,18 +7,8 @@
 ###Install all requirements:
 `pip install -r requirements.txt`
 
-###Configure DB...
-- `brew install postgres`
-- `postgres -D /usr/local/var/postgres`
-- `createuser djangyll`
-- `createdb --owner=djangyll djangyll`
-- `createdb --owner=djangyll test_djangyll`
+###Run application:
+Just execute `./run.py`
 
-###Create migrations:
-`./manage.py makemigrations`
-
-###Apply migrations:
-`./manage.py migrate`
-
-###Create superuser:
-`./manage.py createsuperuser`
+###Unittesting application:
+Just execute `./test.py`

@@ -25,13 +25,12 @@ class TestCase(unittest.TestCase):
 
     @mock.patch('app.models.post.Post.read')
     def test_get(self, mocked):
-        mocked_response = {}
-        mocked.return_value = mocked_response
+        mocked.return_value = {}
 
         response = self.client.get('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), mocked_response)
+        self.assertIsInstance(json.loads(response.data), dict)
 
     @mock.patch('app.models.post.Post.save')
     def test_create(self, mocked):
@@ -45,6 +44,7 @@ class TestCase(unittest.TestCase):
         response = self.client.post('/post', data=data)
 
         self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(json.loads(response.data), dict)
         self.assertEqual(json.loads(response.data), mocked_response)
 
     @mock.patch('app.models.post.Post.update')
@@ -55,6 +55,7 @@ class TestCase(unittest.TestCase):
         response = self.client.put('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(json.loads(response.data), dict)
         self.assertEqual(json.loads(response.data), mocked_response)
 
     @mock.patch('app.models.post.Post.delete')
@@ -65,4 +66,5 @@ class TestCase(unittest.TestCase):
         response = self.client.delete('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(json.loads(response.data), dict)
         self.assertEqual(json.loads(response.data), mocked_response)

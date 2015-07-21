@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/boonya/Djangyll.svg?branch=master)](https://travis-ci.org/boonya/Djangyll)
+
 # Under construction.
 [Issues board on Trello](https://trello.com/b/dCVPojTQ/djangyll)
 

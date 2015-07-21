@@ -4,6 +4,5 @@ python:
 install:
 - cd backend/
 - pip install -r requirements.txt
-- cd ../
 script:
   python test.py

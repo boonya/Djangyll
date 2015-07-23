@@ -6,6 +6,7 @@ from app.utils.request import Request
 from app.utils.response import Response
 from app.reasons import errors
 from app.utils.fs.exception import NotExistsException
+from app.utils.fs import Fs
 
 
 @app.route('/post', methods=['GET'])
@@ -14,7 +15,7 @@ def listing():
 
     :return list:
     """
-    post = Post()
+    post = Post(Fs.get())
 
     try:
         posts = post.list()
@@ -31,16 +32,17 @@ def get(post_id):
     :param str post_id:
     :return dict:
     """
-    post = Post()
+    fs = Fs.get()
+    post = Post(fs)
 
     try:
-        post = post.read(post_id)
+        response = post.read(post_id)
     except NotExistsException:
         return Response.failure(errors.DOES_NOT_EXIST, 404)
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(post))
+    return Response.success(json.dumps(response))
 
 
 @app.route('/post', methods=['POST'])
@@ -49,7 +51,7 @@ def create():
 
     :return dict:
     """
-    post = Post()
+    post = Post(Fs.get())
 
     try:
         response = post.save(Request.dict())
@@ -66,7 +68,7 @@ def update(post_id):
     :param str post_id:
     :return dict:
     """
-    post = Post()
+    post = Post(Fs.get())
 
     try:
         response = post.update(post_id, Request.dict())
@@ -85,7 +87,7 @@ def delete(post_id):
     :param str post_id:
     :return dict:
     """
-    post = Post()
+    post = Post(Fs.get())
 
     try:
         response = post.delete(post_id)

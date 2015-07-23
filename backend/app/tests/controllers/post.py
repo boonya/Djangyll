@@ -14,46 +14,45 @@ class CtrlPostTestCase(unittest.TestCase):
 
     client = app.test_client()
 
-    @mock.patch('app.models.post.Post.list')
-    def test_listing(self, mocked):
-        mocked.return_value = []
+    def setUp(self):
+        """Start patching objects."""
+        self.patcher_fs = mock.patch('app.controllers.post.Fs')
+        self.patcher_post = mock.patch('app.controllers.post.Post')
+        self.mocked_fs = self.patcher_fs.start()
+        self.mocked_post = self.patcher_post.start()
+        self.mocked_fs.get.return_value = None
+        self.mocked_post.return_value = MockedPost()
 
+    def tearDown(self):
+        """Stop patching objects."""
+        self.patcher_fs.stop()
+        self.patcher_post.stop()
+
+    def test_listing(self):
         response = self.client.get('/post')
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), list)
 
-    @mock.patch('app.models.post.Post.read')
-    def test_get(self, mocked):
-        mocked.return_value = {}
-
+    def test_get(self):
         response = self.client.get('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
 
-    @mock.patch('app.models.post.Post.save')
-    def test_create(self, mocked):
-        mocked.return_value = {}
-
+    def test_create(self):
         response = self.client.post('/post', data={})
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
 
-    @mock.patch('app.models.post.Post.update')
-    def test_update(self, mocked):
-        mocked.return_value = {}
-
+    def test_update(self):
         response = self.client.put('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(json.loads(response.data), dict)
 
-    @mock.patch('app.models.post.Post.delete')
-    def test_delete(self, mocked):
-        mocked.return_value = {}
-
+    def test_delete(self):
         response = self.client.delete('/post/some-post.md')
 
         self.assertEqual(response.status_code, 200)
@@ -64,3 +63,20 @@ class CtrlPostTestCase(unittest.TestCase):
 
     def test_bulk_delete(self):
         self.skipTest("'test_bulk_delete' is not implemented yet.")
+
+
+class MockedPost(object):
+    def list(self):
+        return []
+
+    def read(self, *args):
+        return {}
+
+    def save(self, *args):
+        return {}
+
+    def update(self, *args):
+        return {}
+
+    def delete(self, *args):
+        return {}

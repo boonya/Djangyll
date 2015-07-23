@@ -4,15 +4,12 @@ __author__ = 'boonya'
 import re
 import yaml
 import markdown
-from app.utils.fs import Fs
 
 
 class Post(object):
     """Files reader class."""
 
-    file_system = None
-
-    def __init__(self):
+    def __init__(self, FsAdapter):
         """Simple Constructor.
 
         It should prepare object of adapter for FS which was preselected for
@@ -20,7 +17,7 @@ class Post(object):
         :return:
         """
 
-        self.file_system = Fs.get()
+        self.file_system = FsAdapter
 
     def list(self):
         """Return listing of files`s names.

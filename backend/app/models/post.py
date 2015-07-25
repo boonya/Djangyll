@@ -32,7 +32,9 @@ class Post(object):
         :return dict:
         """
         raw_data = self.file_system.read(post_id)
-        return PostModel.decode(raw_data)
+        post = PostModel.decode(raw_data)
+        post['id'] = post_id
+        return post
 
     def save(self, **kwargs):
         """Create new file of article.

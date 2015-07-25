@@ -14,3 +14,6 @@ Just execute `./run.py`
 
 ###Unittesting application:
 Just execute `./test.py`
+
+###Swagger API documentation:
+[Something like this](http://petstore.swagger.io/?url=http://localhost:5000/static/swagger-spec.json)

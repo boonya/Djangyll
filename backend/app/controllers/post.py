@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
+
 import json
 from app import app
 from app.models.post import Post
@@ -115,6 +116,7 @@ def create():
             in: formData
             type: string
             required: true
+
     :return dict:
     """
     post = Post(Fs.get())
@@ -155,6 +157,11 @@ def delete(post_id):
     ---
     tags:
         - post
+    parameters:
+        -   name: post_id
+            in: path
+            type: string
+            required: true
 
     :param str post_id:
     :return dict:

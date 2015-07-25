@@ -44,9 +44,12 @@ class Post(object):
         """
         post_id = kwargs['id']
         post = PostModel(**kwargs)
+
         if post_id in self.file_system.list():
             raise BadFile("File '%s' already exists." % post_id)
-        self.file_system.write(post_id, PostModel.encode(post))
+
+        self.file_system.write(post_id, **PostModel.encode(post))
+
         return post
 
     def update(self, post_id, **kwargs):
@@ -58,7 +61,9 @@ class Post(object):
         """
         post = self.read(post_id)
         post.update(**kwargs)
+
         self.file_system.write(post_id, PostModel.encode(post))
+
         return post
 
     def delete(self, post_id):

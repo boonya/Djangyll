@@ -135,6 +135,42 @@ def update(post_id):
     ---
     tags:
         - post
+    parameters:
+        -   name: post_id
+            in: path
+            type: string
+            required: true
+        -   name: category
+            in: formData
+            type: string
+        -   name: permalink
+            in: formData
+            type: string
+        -   name: layout
+            in: formData
+            type: string
+        -   name: language
+            in: formData
+            type: string
+        -   name: title
+            in: formData
+            type: string
+        -   name: cat_slug
+            in: formData
+            type: string
+        -   name: featured
+            in: formData
+            type: boolean
+        -   name: date
+            in: formData
+            type: string
+            format: date-time
+        -   name: slug
+            in: formData
+            type: string
+        -   name: body
+            in: formData
+            type: string
 
     :param str post_id:
     :return dict:
@@ -142,7 +178,7 @@ def update(post_id):
     post = Post(Fs.get())
 
     try:
-        response = post.update(post_id, Request.dict())
+        response = post.update(post_id, **Request.dict())
     except NotExistsException:
         return Response.failure(errors.DOES_NOT_EXIST, 404)
     except Exception:

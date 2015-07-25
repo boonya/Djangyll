@@ -4,8 +4,10 @@ __author__ = 'boonya'
 """Test cases for post model."""
 
 import unittest
-import mock
 from app.models.post import Post
+from app.models.post import PostModel
+from fixtures.post import MockedFs
+from fixtures.post import post_data
 
 
 class ModelPostTestCase(unittest.TestCase):
@@ -29,59 +31,23 @@ class ModelPostTestCase(unittest.TestCase):
         """Test for read method."""
         result = self.post.read('post-id')
 
-        self.assertIsInstance(result, dict)
-        self.assertIn("meta", result)
-        self.assertIn("body", result)
+        self.assertIsInstance(result, PostModel)
 
     def test_save(self):
         """Test for save method."""
-        self.skipTest("'test_save' is not implemented yet.")
+        post_data['id'] = 'post-id'
+        result = self.post.save(**post_data)
 
-        result = self.post.save(data='data')
-
-        self.assertIsInstance(result, dict)
-        self.assertIn("meta", result)
-        self.assertIn("body", result)
+        self.assertIsInstance(result, PostModel)
 
     def test_update(self):
         """Test for update method."""
-        self.skipTest("'test_update' is not implemented yet.")
+        result = self.post.update('post-id', **post_data)
 
-        result = self.post.update('post-id', data='data')
-
-        self.assertIsInstance(result, dict)
-        self.assertIn("meta", result)
-        self.assertIn("body", result)
+        self.assertIsInstance(result, PostModel)
 
     def test_delete(self):
         """Test for delete method."""
-        self.skipTest("'test_delete' is not implemented yet.")
-
         result = self.post.delete('post-id')
 
-        self.assertIsInstance(result, dict)
-        self.assertIn("meta", result)
-        self.assertIn("body", result)
-
-
-class MockedFs(object):
-    def list(self):
-        return []
-
-    def read(self, post_id):
-        return """
-        ---
-        layout: post
-        joomla_content_id: 1
-        title: "Про нас"
-        slug: about
-        #date: 2010-10-25 22:00:00.000000000 +03:00
-        category: Uncategorised
-        cat_slug: uncategorised
-        featured: 0
-        language: uk-UA
-        permalink: "/about.html"
-        ---
-        ###Title of post
-        simple text
-        """
+        self.assertIsInstance(result, PostModel)

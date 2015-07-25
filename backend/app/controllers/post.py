@@ -7,6 +7,7 @@ from app.utils.response import Response
 from app.reasons import errors
 from app.utils.fs.exception import NotExistsException
 from app.utils.fs import Fs
+from app.models.post import PostSerializer
 
 
 @app.route('/post', methods=['GET'])
@@ -42,7 +43,7 @@ def get(post_id):
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response))
+    return Response.success(json.dumps(response, cls=PostSerializer))
 
 
 @app.route('/post', methods=['POST'])
@@ -58,7 +59,7 @@ def create():
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response))
+    return Response.success(json.dumps(response, cls=PostSerializer))
 
 
 @app.route('/post/<post_id>', methods=['PUT'])
@@ -77,7 +78,7 @@ def update(post_id):
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response))
+    return Response.success(json.dumps(response, cls=PostSerializer))
 
 
 @app.route('/post/<post_id>', methods=['DELETE'])
@@ -96,7 +97,7 @@ def delete(post_id):
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response))
+    return Response.success(json.dumps(response, cls=PostSerializer))
 
 
 @app.route('/post', methods=['PUT'])

@@ -122,7 +122,7 @@ def create():
     post = Post(Fs.get())
 
     try:
-        response = post.save(Request.dict())
+        response = post.save(**Request.dict())
     except Exception:
         return Response.failure(errors.UNKNOWN, 500)
 

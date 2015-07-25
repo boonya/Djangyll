@@ -48,7 +48,7 @@ class Post(object):
         if post_id in self.file_system.list():
             raise BadFile("File '%s' already exists." % post_id)
 
-        self.file_system.write(post_id, **PostModel.encode(post))
+        self.file_system.write(post_id, PostModel.encode(post))
 
         return post
 

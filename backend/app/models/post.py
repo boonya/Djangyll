@@ -3,22 +3,20 @@ __author__ = 'boonya'
 """Model of posts."""
 import re
 import yaml
-import markdown
 import json
 
 
 class Post(object):
     """Files reader class."""
 
-    def __init__(self, FsAdapter):
+    def __init__(self, fs_adapter):
         """Simple Constructor.
 
-        It should prepare object of adapter for FS which was preselected for
-        current site.
+        :param fs_adapter:
         :return:
         """
 
-        self.file_system = FsAdapter
+        self.file_system = fs_adapter
 
     def list(self):
         """Return listing of files`s names.
@@ -46,8 +44,8 @@ class Post(object):
         post = PostModel(**kwargs)
         if post_id in self.file_system.list():
             raise BadFile("File '%s' already exists." % post_id)
-        raw_data = self.file_system.write(post_id, PostModel.encode(post))
-        return PostModel.decode(raw_data)
+        self.file_system.write(post_id, PostModel.encode(post))
+        return post
 
     def update(self, post_id, **kwargs):
         """Update file of article.
@@ -58,10 +56,10 @@ class Post(object):
         """
         post = self.read(post_id)
         post.update(**kwargs)
-        raw_data = self.file_system.write(post_id, PostModel.encode(post))
-        return PostModel.decode(raw_data)
+        self.file_system.write(post_id, PostModel.encode(post))
+        return post
 
-    def delete(self, post_id, **kwargs):
+    def delete(self, post_id):
         """Delete file of article.
 
         :param string post_id:
@@ -91,6 +89,8 @@ class PostModel(object):
         return self.__getattribute__(key)
 
     def __setitem__(self, key, value):
+        if isinstance(value, str):
+            value = unicode(value, "utf-8")
         self.__setattr__(key, value)
 
     def update(self, **kwargs):
@@ -100,24 +100,34 @@ class PostModel(object):
 
     @staticmethod
     def decode(raw_data):
+        """Decode passed raw data to model object.
+
+        :param str raw_data:
+        :return PostModel:
+        """
         entries = re.split("---\n+", raw_data)
 
         if 3 != len(entries):
             raise BadFile("The content is invalid.")
 
-        meta = yaml.load(entries[1])
-        body = markdown.markdown(unicode(entries[2], "utf-8"))
-
-        return PostModel(body=body, **meta)
+        return PostModel(body=entries[2], **yaml.load(entries[1]))
 
     @staticmethod
     def encode(model):
+        """Encode passed model to raw post data.
+
+        :param PostModel model:
+        :return str:
+        """
         if not isinstance(model, PostModel):
             raise ValueError("Is an instance of unexpected class.")
+
         meta = {key: value for key, value in model.__dict__.iteritems() if
                 'body' not in key}
+
         body = model.__dict__.get('body', None)
         meta = yaml.dump(meta, default_flow_style=False) + "\n"
+
         return "---\n".join(['', meta, body])
 
 
@@ -127,8 +137,8 @@ class PostSerializer(json.JSONEncoder):
             return super(PostSerializer, self).default(obj)
 
         # @TODO: Need to make more common.
-        if obj.date:
-            obj.date = obj.date.isoformat()
+        if obj['date']:
+            obj['date'] = obj['date'].isoformat()
 
         return obj.__dict__
 

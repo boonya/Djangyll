@@ -5,7 +5,9 @@ import logging
 import sys
 
 from tests.controllers.post import CtrlPostTestCase
-from tests.models.post import ModelPostTestCase
+from tests.models.post import PostTestCase
+from tests.models.post import PostModelTestCase
+from tests.models.post import PostSerializerTestCase
 
 if __name__ == '__main__':
     logging.basicConfig(stream=sys.stderr)

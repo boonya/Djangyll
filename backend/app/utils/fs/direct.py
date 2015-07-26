@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
+
 from os import listdir, remove
 from os.path import isfile, join, isdir, exists
 from app.utils.fs.interface import FileSystemInterface
@@ -39,16 +40,19 @@ class Direct(FileSystemInterface):
     def write(self, path, data):
         file_path = self.container + '/' + path
 
-        if not exists(file_path) or not isfile(file_path):
-            raise NotExistsException("'%s' is unknown file." % path)
-
         with open(file_path, 'w') as fh:
-            data = fh.write(data)
+            fh.write(data)
 
-        return data
+        with open(file_path, 'r') as fh:
+            result = fh.read()
+
+        return result
 
     def remove(self, path):
         file_path = self.container + '/' + path
+
+        if not exists(file_path) or not isfile(file_path):
+            raise NotExistsException("'%s' is unknown file." % path)
 
         remove(file_path)
 

@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
+
 """Test cases for post model."""
+
 import unittest
 import json
 from datetime import datetime

@@ -1,33 +1,5 @@
 {
-  "consumes": [
-    "application/json"
-  ],
-  "contact": {
-    "email": "support@boonya.info",
-    "name": "Sergii boonya Buinytskyi",
-    "url": "http://boonya.info/"
-  },
-  "definitions": {
-    "PostModel": {
-      "description": "Post",
-      "schema": {
-        "example": {
-          "body": "string",
-          "cat_slug": "uncategorised",
-          "category": "Uncategorised",
-          "date": "2010-10-25T19:00:00",
-          "featured": 0,
-          "id": "2010-10-25-about.markdown",
-          "language": "uk-UA",
-          "layout": "post",
-          "permalink": "/about.html",
-          "slug": "about",
-          "title": "\u041f\u0440\u043e \u043d\u0430\u0441"
-        },
-        "type": "object"
-      }
-    }
-  },
+  "swagger": "2.0",
   "info": {
     "license": {
       "name": "MIT",
@@ -36,6 +8,25 @@
     "title": "Djangyll App",
     "version": "1.0.1"
   },
+  "contact": {
+    "email": "me@boonya.info",
+    "name": "Sergii boonya Buinytskyi",
+    "url": "http://boonya.info/Djangyll"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "tags": [
+    {
+      "description": "Everything about your Posts",
+      "name": "post"
+    }
+  ],
   "paths": {
     "/post": {
       "delete": {
@@ -249,14 +240,25 @@
       }
     }
   },
-  "produces": [
-    "application/json"
-  ],
-  "swagger": "2.0",
-  "tags": [
-    {
-      "description": "Everything about your Posts",
-      "name": "post"
+  "definitions": {
+    "PostModel": {
+      "description": "Post",
+      "schema": {
+        "example": {
+          "body": "string",
+          "cat_slug": "uncategorised",
+          "category": "Uncategorised",
+          "date": "2010-10-25T19:00:00",
+          "featured": 0,
+          "id": "2010-10-25-about.markdown",
+          "language": "uk-UA",
+          "layout": "post",
+          "permalink": "/about.html",
+          "slug": "about",
+          "title": "\u041f\u0440\u043e \u043d\u0430\u0441"
+        },
+        "type": "object"
+      }
     }
-  ]
+  }
 }

@@ -17,4 +17,4 @@ Just execute `./run.py`
 Just execute `./test.py`
 
 ###Swagger API documentation:
-[Something like this](http://boonya.github.io/swagger)
+[Something like this](http://boonya.github.io/Djangyll/swagger)

@@ -9,6 +9,8 @@ from app.utils.fs.exception import NotExistsException
 
 
 class DirectTestCase(unittest.TestCase):
+    container_path = os.path.join(app.root_path, '../tmp')
+
     mock_files = {
         'first.md': 'Data of first file',
         'second.md': 'Data of second file'
@@ -17,8 +19,6 @@ class DirectTestCase(unittest.TestCase):
     files_to_cleanup = []
 
     def setUp(self):
-        self.container_path = os.path.join(app.root_path, '../tmp')
-        self.fs = Direct(self.container_path)
         for (path, data) in self.mock_files.iteritems():
             self.create_file(path, data)
             self.files_to_cleanup.append(path)
@@ -28,35 +28,38 @@ class DirectTestCase(unittest.TestCase):
             file_path = os.path.join(self.container_path, path)
             self.remove_file(file_path)
 
+    def test_wrong_init(self):
+        with self.assertRaises(ValueError):
+            Direct('unknown-path')
+
     def test_list(self):
-        result = self.fs.list()
+        mocked_list = ['.gitignore']
+        mocked_list += self.mock_files.keys()
+
+        fs = Direct(self.container_path)
+        result = fs.list()
 
         self.assertIsInstance(result, list)
         self.assertEqual(len(result), 3)
+        self.assertListEqual(result, mocked_list)
 
     def test_read(self):
-        result = self.fs.read('first.md')
+        fs = Direct(self.container_path)
+        result = fs.read('first.md')
 
         self.assertEqual(result, 'Data of first file')
 
     def test_read_unknown(self):
-        path = 'unknown.md'
-
-        try:
-            self.fs.read(path)
-        except NotExistsException, exc:
-            self.assertEqual(exc.args[0], "'%s' is unknown file." % path)
-            return None
-        except Exception:
-            self.fail("We wait an NotExistsException exception")
-
-        self.fail("We wait an exception")
+        with self.assertRaises(NotExistsException):
+            fs = Direct(self.container_path)
+            fs.read('unknown.md')
 
     def test_write_new(self):
         path = 'third.md'
         data = 'Data of third file'
 
-        result = self.fs.write(path, data)
+        fs = Direct(self.container_path)
+        result = fs.write(path, data)
 
         self.files_to_cleanup.append(path)
 
@@ -66,7 +69,8 @@ class DirectTestCase(unittest.TestCase):
         path = 'second.md'
         data = 'Updated data of second file'
 
-        result = self.fs.write(path, data)
+        fs = Direct(self.container_path)
+        result = fs.write(path, data)
 
         self.assertEqual(result, data)
 
@@ -76,7 +80,8 @@ class DirectTestCase(unittest.TestCase):
         self.assertEqual(content, data)
 
     def test_remove(self):
-        self.fs.remove('second.md')
+        fs = Direct(self.container_path)
+        fs.remove('second.md')
 
         listing = [f for f in os.listdir(self.container_path) if
                    os.path.isfile(os.path.join(self.container_path, f))]
@@ -84,16 +89,9 @@ class DirectTestCase(unittest.TestCase):
         self.assertEqual(len(listing), 2)
 
     def test_remove_unknown(self):
-        path = 'unknown.md'
-        try:
-            self.fs.remove(path)
-        except NotExistsException, exc:
-            self.assertEqual(exc.args[0], "'%s' is unknown file." % path)
-            return None
-        except Exception:
-            self.fail("We wait an NotExistsException exception")
-
-        self.fail("We wait an exception")
+        with self.assertRaises(NotExistsException):
+            fs = Direct(self.container_path)
+            fs.remove('unknown.md')
 
     def create_file(self, path, data):
         file_path = os.path.join(self.container_path, path)

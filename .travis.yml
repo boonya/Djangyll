@@ -4,7 +4,10 @@ python:
 install:
 - cd backend/
 - pip install -r requirements.txt
+- pip install coveralls
 script:
-  python test.py
+  coverage run --source=app ./test.py
+after_success:
+  coveralls
 notifications:
   email: false

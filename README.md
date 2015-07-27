@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/boonya/Djangyll.svg?branch=master)](https://travis-ci.org/boonya/Djangyll)
+[![Coverage Status](https://coveralls.io/repos/boonya/Djangyll/badge.svg?branch=master&service=github)](https://coveralls.io/github/boonya/Djangyll?branch=master)
 
 # Under construction.
 [Issues board on Trello](https://trello.com/b/dCVPojTQ/djangyll)

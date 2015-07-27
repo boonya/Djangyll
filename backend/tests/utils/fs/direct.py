@@ -15,7 +15,7 @@ class DirectTestCase(unittest.TestCase):
     }
 
     def setUp(self):
-        self.container_path = os.path.join(app.root_path, '../tests/tmp')
+        self.container_path = os.path.join(app.root_path, '../tmp')
         self.fs = Direct(self.container_path)
         for (path, data) in self.mock_files.iteritems():
             self.create_file(path, data)

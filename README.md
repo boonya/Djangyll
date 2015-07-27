@@ -17,4 +17,4 @@ Just execute `./run.py`
 Just execute `./test.py`
 
 ###Swagger API documentation:
-[Something like this](http://petstore.swagger.io/?url=http://localhost:5000/static/swagger-spec.json)
+[Something like this](http://boonya.github.io/swagger)

@@ -1,6 +1,18 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
 
+"""
+Application settings.
+
+    Can contain something like this:
+        "host": '0.0.0.0',
+        "port": 8080,
+        "debug": True
+"""
+app = {
+    "debug": False
+}
+
 file_system = "direct"
 path = ""
 

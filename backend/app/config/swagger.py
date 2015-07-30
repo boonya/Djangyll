@@ -25,26 +25,5 @@ SPEC = dict(
     tags=[{
         "name": "post",
         "description": "Everything about your Posts"
-    }],
-    definitions={
-        "PostModel": {
-            "description": "Post",
-            "schema": {
-                "type": "object",
-                "example": {
-                    "id": "2010-10-25-about.markdown",
-                    "category": "Uncategorised",
-                    "permalink": "/about.html",
-                    "layout": "post",
-                    "language": "uk-UA",
-                    "title": "Про нас",
-                    "cat_slug": "uncategorised",
-                    "featured": 0,
-                    "date": "2010-10-25T19:00:00",
-                    "slug": "about",
-                    "body": "string"
-                }
-            }
-        }
-    }
+    }]
 )

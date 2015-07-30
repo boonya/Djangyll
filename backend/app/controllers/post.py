@@ -18,9 +18,7 @@ def listing():
     ---
     tags:
         - post
-    responses:
-        200:
-            description: Posts listing.
+
     :return list:
     """
     post = Post(Fs.get())
@@ -45,12 +43,6 @@ def get(post_id):
             description: ID of post
             required: true
             type: string
-    responses:
-        200:
-            description: Posts listing.
-            schema:
-                type: object
-                $ref: '#/definitions/PostModel'
 
     :param str post_id:
     :return dict:

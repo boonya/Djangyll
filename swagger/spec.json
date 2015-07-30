@@ -1,32 +1,20 @@
 {
-  "swagger": "2.0",
+  "consumes": [
+    "application/json"
+  ],
   "info": {
+    "contact": {
+      "email": "support@boonya.info",
+      "name": "Sergii boonya Buinytskyi",
+      "url": "http://boonya.info/"
+    },
     "license": {
       "name": "MIT",
-      "url": "http://opensource.org/licenses/MIT"
+      "url": "https://raw.githubusercontent.com/boonya/Djangyll/master/LICENSE"
     },
     "title": "Djangyll App",
     "version": "1.0.1"
   },
-  "contact": {
-    "email": "me@boonya.info",
-    "name": "Sergii boonya Buinytskyi",
-    "url": "http://boonya.info/Djangyll"
-  },
-  "host": "localhost:5000",
-  "basePath": "/",
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
-  "tags": [
-    {
-      "description": "Everything about your Posts",
-      "name": "post"
-    }
-  ],
   "paths": {
     "/post": {
       "delete": {
@@ -39,11 +27,7 @@
       },
       "get": {
         "description": "",
-        "responses": {
-          "200": {
-            "description": "Posts listing."
-          }
-        },
+        "responses": {},
         "summary": "Get listing.",
         "tags": [
           "post"
@@ -157,15 +141,7 @@
             "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "Posts listing.",
-            "schema": {
-              "$ref": "#/definitions/PostModel",
-              "type": "object"
-            }
-          }
-        },
+        "responses": {},
         "summary": "Get concrete post.",
         "tags": [
           "post"
@@ -240,25 +216,14 @@
       }
     }
   },
-  "definitions": {
-    "PostModel": {
-      "description": "Post",
-      "schema": {
-        "example": {
-          "body": "string",
-          "cat_slug": "uncategorised",
-          "category": "Uncategorised",
-          "date": "2010-10-25T19:00:00",
-          "featured": 0,
-          "id": "2010-10-25-about.markdown",
-          "language": "uk-UA",
-          "layout": "post",
-          "permalink": "/about.html",
-          "slug": "about",
-          "title": "\u041f\u0440\u043e \u043d\u0430\u0441"
-        },
-        "type": "object"
-      }
+  "produces": [
+    "application/json"
+  ],
+  "swagger": "2.0",
+  "tags": [
+    {
+      "description": "Everything about your Posts",
+      "name": "post"
     }
-  }
+  ]
 }

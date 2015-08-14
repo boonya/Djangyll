@@ -18,4 +18,4 @@ def after_request(response):
     return response
 
 
-from controllers import post, swagger
+from controllers import post

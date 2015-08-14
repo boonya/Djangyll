@@ -15,12 +15,7 @@ from app.models.post import PostSerializer
 @app.route('/post', methods=['GET'])
 def listing():
     """Get listing.
-    ---
-    tags:
-        - post
-    responses:
-        200:
-            description: Posts listing.
+
     :return list:
     """
     post = Post(Fs.get())
@@ -36,21 +31,6 @@ def listing():
 @app.route('/post/<post_id>', methods=['GET'])
 def get(post_id):
     """Get concrete post.
-    ---
-    tags:
-        - post
-    parameters:
-        -   name: post_id
-            in: path
-            description: ID of post
-            required: true
-            type: string
-    responses:
-        200:
-            description: Posts listing.
-            schema:
-                type: object
-                $ref: '#/definitions/PostModel'
 
     :param str post_id:
     :return dict:
@@ -71,51 +51,6 @@ def get(post_id):
 @app.route('/post', methods=['POST'])
 def create():
     """Create new post.
-    ---
-    tags:
-        - post
-    parameters:
-        -   name: category
-            in: formData
-            type: string
-            required: true
-        -   name: permalink
-            in: formData
-            type: string
-            required: true
-        -   name: layout
-            in: formData
-            type: string
-            required: true
-        -   name: language
-            in: formData
-            type: string
-            required: true
-        -   name: title
-            in: formData
-            type: string
-            required: true
-        -   name: cat_slug
-            in: formData
-            type: string
-            required: true
-        -   name: featured
-            in: formData
-            type: boolean
-            required: true
-        -   name: date
-            in: formData
-            type: string
-            format: date-time
-            required: true
-        -   name: slug
-            in: formData
-            type: string
-            required: true
-        -   name: body
-            in: formData
-            type: string
-            required: true
 
     :return dict:
     """
@@ -132,45 +67,6 @@ def create():
 @app.route('/post/<post_id>', methods=['PUT'])
 def update(post_id):
     """Update concrete post.
-    ---
-    tags:
-        - post
-    parameters:
-        -   name: post_id
-            in: path
-            type: string
-            required: true
-        -   name: category
-            in: formData
-            type: string
-        -   name: permalink
-            in: formData
-            type: string
-        -   name: layout
-            in: formData
-            type: string
-        -   name: language
-            in: formData
-            type: string
-        -   name: title
-            in: formData
-            type: string
-        -   name: cat_slug
-            in: formData
-            type: string
-        -   name: featured
-            in: formData
-            type: boolean
-        -   name: date
-            in: formData
-            type: string
-            format: date-time
-        -   name: slug
-            in: formData
-            type: string
-        -   name: body
-            in: formData
-            type: string
 
     :param str post_id:
     :return dict:
@@ -190,14 +86,6 @@ def update(post_id):
 @app.route('/post/<post_id>', methods=['DELETE'])
 def delete(post_id):
     """Delete concrete post.
-    ---
-    tags:
-        - post
-    parameters:
-        -   name: post_id
-            in: path
-            type: string
-            required: true
 
     :param str post_id:
     :return dict:
@@ -217,9 +105,6 @@ def delete(post_id):
 @app.route('/post', methods=['PUT'])
 def bulk_update():
     """Bulk update.
-    ---
-    tags:
-        - post
 
     :return list:
     """
@@ -229,9 +114,6 @@ def bulk_update():
 @app.route('/post', methods=['DELETE'])
 def bulk_delete():
     """Bulk delete.
-    ---
-    tags:
-        - post
 
     :return list:
     """

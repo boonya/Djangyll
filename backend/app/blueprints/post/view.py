@@ -2,17 +2,19 @@
 __author__ = 'boonya'
 
 import json
-from app import app
-from app.models.post import Post
-from app.utils.request import Request
-from app.utils.response import Response
-from app.reasons import errors
-from app.utils.fs.exception import NotExistsException
-from app.utils.fs import Fs
-from app.models.post import PostSerializer
+from flask import Blueprint
+from ...utils.request import Request
+from ...utils.response import Response
+from ...utils.fs import Fs
+from ...utils.fs.exception import NotExistsException
+from ...reasons import errors
+from .post import Post
+from .post import PostSerializer
+
+post = Blueprint('post', __name__, url_prefix='/post')
 
 
-@app.route('/post', methods=['GET'])
+@post.route('/', methods=['GET'])
 def listing():
     """Get listing.
 
@@ -28,7 +30,7 @@ def listing():
     return Response.success(json.dumps(posts))
 
 
-@app.route('/post/<post_id>', methods=['GET'])
+@post.route('/<post_id>', methods=['GET'])
 def get(post_id):
     """Get concrete post.
 
@@ -48,7 +50,7 @@ def get(post_id):
     return Response.success(json.dumps(response, cls=PostSerializer))
 
 
-@app.route('/post', methods=['POST'])
+@post.route('/', methods=['POST'])
 def create():
     """Create new post.
 
@@ -64,7 +66,7 @@ def create():
     return Response.success(json.dumps(response, cls=PostSerializer))
 
 
-@app.route('/post/<post_id>', methods=['PUT'])
+@post.route('/<post_id>', methods=['PUT'])
 def update(post_id):
     """Update concrete post.
 
@@ -83,7 +85,7 @@ def update(post_id):
     return Response.success(json.dumps(response, cls=PostSerializer))
 
 
-@app.route('/post/<post_id>', methods=['DELETE'])
+@post.route('/<post_id>', methods=['DELETE'])
 def delete(post_id):
     """Delete concrete post.
 
@@ -102,7 +104,7 @@ def delete(post_id):
     return Response.success(json.dumps(response, cls=PostSerializer))
 
 
-@app.route('/post', methods=['PUT'])
+@post.route('/', methods=['PUT'])
 def bulk_update():
     """Bulk update.
 
@@ -111,7 +113,7 @@ def bulk_update():
     return Response.success(json.dumps("Bulk update"))
 
 
-@app.route('/post', methods=['DELETE'])
+@post.route('/', methods=['DELETE'])
 def bulk_delete():
     """Bulk delete.
 

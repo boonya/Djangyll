@@ -3,8 +3,8 @@ __author__ = 'boonya'
 
 from os import listdir, remove
 from os.path import isfile, join, isdir, exists
-from app.utils.fs.interface import FileSystemInterface
-from app.utils.fs.exception import NotExistsException
+from .interface import FileSystemInterface
+from .exception import NotExistsException
 
 
 class Direct(FileSystemInterface):

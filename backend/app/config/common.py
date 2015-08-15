@@ -10,11 +10,10 @@ Application settings.
         "debug": True
 """
 app = {
-    "debug": False
+    "DEBUG": False
 }
 
-file_system = "direct"
-path = ""
+sites = {}
 
 """
 LOCAL SETTINGS.

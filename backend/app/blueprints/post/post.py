@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
-"""Model of posts."""
+
 import re
 import yaml
-import json
+from ...utils.serializer import Serializer
 
 
 class Post(object):
@@ -138,7 +138,7 @@ class PostModel(object):
         return "---\n".join(['', meta, body])
 
 
-class PostSerializer(json.JSONEncoder):
+class PostSerializer(Serializer):
     def default(self, obj):
         if not isinstance(obj, PostModel):
             return super(PostSerializer, self).default(obj)

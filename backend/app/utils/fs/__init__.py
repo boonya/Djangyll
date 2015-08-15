@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
-from app.utils.fs.direct import Direct
-from app.config import common as config
+
+from .direct import Direct
+from ...config import common as common_config
 
 
 class Fs(object):
@@ -11,8 +12,11 @@ class Fs(object):
     def get():
         fs = None
 
-        if 'direct' == config.file_system:
-            fs = Direct(config.path)
+        # @TODO: Need to rewrite this dirty hack!
+        site_config = common_config.sites['boonya']
+
+        if 'direct' == site_config['fs']:
+            fs = Direct(site_config['path'])
 
         if not fs:
             raise RuntimeError("File system was not chosen.")

@@ -3,7 +3,7 @@ __author__ = 'boonya'
 
 """Test cases for post controller."""
 
-from app import app
+from app import create_app
 import unittest
 import mock
 import json
@@ -12,7 +12,7 @@ import json
 class CtrlPostTestCase(unittest.TestCase):
     """Test cases for PostView."""
 
-    client = app.test_client()
+    client = create_app().test_client()
 
     def setUp(self):
         """Start patching objects."""

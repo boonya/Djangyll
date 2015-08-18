@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
 
+import os
 from flask import Flask, g
 from flask.ext.cors import cross_origin
 from .utils.response import Response
@@ -9,6 +10,8 @@ from .config import common
 
 # blueprints
 from .blueprints.post import post
+
+BASE_DIR = os.path.relpath(os.path.dirname(__file__))
 
 BLUEPRINTS = (
     post,

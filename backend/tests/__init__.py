@@ -2,7 +2,7 @@
 __author__ = 'boonya'
 
 import unittest
-from .controllers.post import CtrlPostTestCase
+from .api.post import PostApiTestCase
 from .models.post import PostTestCase, PostModelTestCase, \
     PostSerializerTestCase
 from .utils.fs.direct import DirectTestCase
@@ -23,7 +23,7 @@ class TestRunner(object):
         loader = unittest.TestLoader()
 
         test_cases = [DirectTestCase, PostTestCase, PostModelTestCase,
-                      PostSerializerTestCase]
+                      PostSerializerTestCase, PostApiTestCase]
 
         suite = []
         for case in test_cases:

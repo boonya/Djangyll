@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
-from flask import make_response
+
 import json
+from flask import make_response
+from .serializer import Serializer
 
 
 class Response(object):
@@ -9,23 +11,30 @@ class Response(object):
     """Response wrapper helper."""
 
     @staticmethod
-    def success(data, code=200):
+    def success(data, code=200, serializer=None):
         """Returns successful response.
 
         :param str body:
         :param int code:
         :return ResponseBase:
         """
+
+        if isinstance(serializer, Serializer):
+            data = json.dumps(data, cls=serializer)
+        else:
+            data = json.dumps(data)
+
         response = make_response(data, code)
         response.headers['Content-Type'] = 'application/json'
         return response
 
     @staticmethod
-    def failure(reason, code=400):
+    def failure(reason, code=400, **kwargs):
         """Returns response with serialized json string about error reason.
 
         :param str reason:
         :param int code:
+        :param kwargs:
         :return ResponseBase:
         """
         response = make_response(json.dumps({"error": reason}), code)

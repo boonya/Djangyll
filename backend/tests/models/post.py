@@ -6,13 +6,8 @@ __author__ = 'boonya'
 import unittest
 import json
 from datetime import datetime
-from app.models.post import Post
-from app.models.post import PostModel
-from app.models.post import PostSerializer
-from fixtures.post import MockedFs
-from fixtures.post import post_raw
-from fixtures.post import post_data
-from fixtures.post import post_json
+from app.blueprints.post.post import Post, PostModel, PostSerializer
+from fixtures.post import MockedFs, post_raw, post_data, post_json
 
 
 class PostTestCase(unittest.TestCase):

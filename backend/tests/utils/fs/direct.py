@@ -3,13 +3,13 @@ __author__ = 'boonya'
 
 import unittest
 import os
-from app import app
+from app import BASE_DIR
 from app.utils.fs.direct import Direct
 from app.utils.fs.exception import NotExistsException
 
 
 class DirectTestCase(unittest.TestCase):
-    container_path = os.path.join(app.root_path, '../tmp')
+    container_path = os.path.join(BASE_DIR, '../tmp')
 
     mock_files = {
         'first.md': 'Data of first file',
@@ -21,12 +21,10 @@ class DirectTestCase(unittest.TestCase):
     def setUp(self):
         for (path, data) in self.mock_files.iteritems():
             self.create_file(path, data)
-            self.files_to_cleanup.append(path)
 
     def tearDown(self):
         for path in self.files_to_cleanup:
-            file_path = os.path.join(self.container_path, path)
-            self.remove_file(file_path)
+            self.remove_file(path)
 
     def test_wrong_init(self):
         with self.assertRaises(ValueError):
@@ -99,10 +97,11 @@ class DirectTestCase(unittest.TestCase):
         with open(file_path, 'w') as fh:
             fh.write(data)
 
+        self.files_to_cleanup.append(path)
+
     def remove_file(self, path):
         file_path = os.path.join(self.container_path, path)
-
-        if not os.path.isfile(os.path.join(self.container_path, file_path)):
+        if not os.path.isfile(file_path):
             return None
 
         os.remove(file_path)

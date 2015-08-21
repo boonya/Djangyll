@@ -37,6 +37,6 @@ class Response(object):
         :param kwargs:
         :return ResponseBase:
         """
-        response = make_response(json.dumps({"error": reason}), code)
+        response = make_response(json.dumps({"reason": reason}), code)
         response.headers['Content-Type'] = 'application/json'
         return response

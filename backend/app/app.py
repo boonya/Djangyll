@@ -55,11 +55,11 @@ def error_pages(app):
 
     @app.errorhandler(403)
     def forbidden_page(error):
-        return Response.failure(errors.FORBIDDEN_PAGE, 403, error=error)
+        return Response.failure(errors.FORBIDDEN, 403, error=error)
 
     @app.errorhandler(404)
     def page_not_found(error):
-        return Response.failure(errors.PAGE_NOT_FOUND, 404, error=error)
+        return Response.failure(errors.NOT_FOUND, 404, error=error)
 
     @app.errorhandler(405)
     def method_not_allowed(error):
@@ -67,7 +67,7 @@ def error_pages(app):
 
     @app.errorhandler(500)
     def server_error_page(error):
-        return Response.failure(errors.SERVER_ERROR_PAGE, 500, error=error)
+        return Response.failure(errors.SERVER_ERROR, 500, error=error)
 
 
 def allow_cross_origin(app):

@@ -14,6 +14,8 @@ class PostApiTestCase(unittest.TestCase):
 
     client = create_app().test_client()
 
+    error_404_response = '{"reason": "not_found"}'
+
     def setUp(self):
         """Start patching objects."""
         self.patcher_fs = mock.patch('app.blueprints.post.view.Fs')
@@ -50,8 +52,7 @@ class PostApiTestCase(unittest.TestCase):
 
         response = self.client.get('/post/unknown-post.md')
 
-        self._compare_assertions(response, 404,
-                                 '{"error": "does_not_exist"}')
+        self._compare_assertions(response, 404, self.error_404_response)
 
     def test_create(self):
         response = self.client.post('/post/', data={})
@@ -63,10 +64,24 @@ class PostApiTestCase(unittest.TestCase):
 
         self._compare_assertions(response, 200, '{"id": "some-post.md"}')
 
+    def test_update_404(self):
+        self.mocked_post().update.side_effect = NotExistsException('foo')
+
+        response = self.client.put('/post/unknown-post.md', data={})
+
+        self._compare_assertions(response, 404, self.error_404_response)
+
     def test_delete(self):
         response = self.client.delete('/post/some-post.md')
 
         self._compare_assertions(response, 200, '{"success": true}')
+
+    def test_delete_404(self):
+        self.mocked_post().delete.side_effect = NotExistsException('foo')
+
+        response = self.client.delete('/post/unknown-post.md')
+
+        self._compare_assertions(response, 404, self.error_404_response)
 
     def test_bulk_update(self):
         self.skipTest("'test_bulk_update' is not implemented yet.")

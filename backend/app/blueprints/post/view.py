@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
 
-import json
 from flask import Blueprint
 from ...utils.request import Request
 from ...utils.response import Response
 from ...utils.fs import Fs
 from ...utils.fs.exception import NotExistsException
-from ...reasons import errors
 from .post import Post
 from .post import PostSerializer
+from werkzeug.exceptions import NotFound
 
 post = Blueprint('post', __name__, url_prefix='/post')
 
@@ -22,9 +21,7 @@ def listing():
     """
     model = Post(Fs.get())
 
-    posts = model.list()
-
-    return Response.success(posts)
+    return Response.success(model.list())
 
 
 @post.route('/<post_id>', methods=['GET'])
@@ -39,7 +36,7 @@ def get(post_id):
     try:
         response = model.read(post_id)
     except NotExistsException:
-        return Response.failure(errors.DOES_NOT_EXIST, code=404)
+        raise NotFound()
 
     return Response.success(response, serializer=PostSerializer)
 
@@ -52,9 +49,8 @@ def create():
     """
     model = Post(Fs.get())
 
-    response = model.save(**Request.dict())
-
-    return Response.success(response, serializer=PostSerializer)
+    return Response.success(model.save(**Request.dict()),
+                            serializer=PostSerializer)
 
 
 @post.route('/<post_id>', methods=['PUT'])
@@ -69,7 +65,7 @@ def update(post_id):
     try:
         response = model.update(post_id, **Request.dict())
     except NotExistsException:
-        return Response.failure(errors.DOES_NOT_EXIST, 404)
+        raise NotFound()
 
     return Response.success(response, serializer=PostSerializer)
 
@@ -86,7 +82,7 @@ def delete(post_id):
     try:
         response = model.delete(post_id)
     except NotExistsException:
-        return Response.failure(errors.DOES_NOT_EXIST, 404)
+        raise NotFound()
 
     return Response.success(response, serializer=PostSerializer)
 
@@ -97,7 +93,7 @@ def bulk_update():
 
     :return list:
     """
-    return Response.success(json.dumps("Bulk update"))
+    return Response.success("Bulk update")
 
 
 @post.route('/', methods=['DELETE'])
@@ -106,4 +102,4 @@ def bulk_delete():
 
     :return list:
     """
-    return Response.success(json.dumps("Bulk delete"))
+    return Response.success("Bulk delete")

@@ -6,7 +6,7 @@ __author__ = 'boonya'
 from app import create_app
 import unittest
 import mock
-import json
+from app.utils.fs.exception import NotExistsException
 
 
 class PostApiTestCase(unittest.TestCase):
@@ -21,7 +21,14 @@ class PostApiTestCase(unittest.TestCase):
         self.mocked_fs = self.patcher_fs.start()
         self.mocked_post = self.patcher_post.start()
         self.mocked_fs.get.return_value = None
-        self.mocked_post.return_value = MockedPost()
+
+        mocked_post = self.mocked_post()
+
+        mocked_post.list.return_value = []
+        mocked_post.read.return_value = {'id': 'some-post.md'}
+        mocked_post.save.return_value = {'id': 'some-post.md'}
+        mocked_post.update.return_value = {'id': 'some-post.md'}
+        mocked_post.delete.return_value = {'success': True}
 
     def tearDown(self):
         """Stop patching objects."""
@@ -31,27 +38,35 @@ class PostApiTestCase(unittest.TestCase):
     def test_listing(self):
         response = self.client.get('/post/')
 
-        self._assertionDict(response, u'[]')
+        self._compare_assertions(response, 200, '[]')
 
     def test_get(self):
         response = self.client.get('/post/some-post.md')
 
-        self._assertionDict(response, u'{"id": "some-post.md"}')
+        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
+
+    def test_get_404(self):
+        self.mocked_post().read.side_effect = NotExistsException('foo')
+
+        response = self.client.get('/post/unknown-post.md')
+
+        self._compare_assertions(response, 404,
+                                 '{"error": "does_not_exist"}')
 
     def test_create(self):
         response = self.client.post('/post/', data={})
 
-        self._assertionDict(response, u'{}')
+        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
 
     def test_update(self):
         response = self.client.put('/post/some-post.md', data={})
 
-        self._assertionDict(response, u'{"id": "some-post.md"}')
+        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
 
     def test_delete(self):
         response = self.client.delete('/post/some-post.md')
 
-        self._assertionDict(response, u'{"success": true}')
+        self._compare_assertions(response, 200, '{"success": true}')
 
     def test_bulk_update(self):
         self.skipTest("'test_bulk_update' is not implemented yet.")
@@ -59,27 +74,8 @@ class PostApiTestCase(unittest.TestCase):
     def test_bulk_delete(self):
         self.skipTest("'test_bulk_delete' is not implemented yet.")
 
-    def _assertionDict(self, response, expected_data):
-        self.assertEqual(response.status_code, 200)
+    def _compare_assertions(self, response, expected_code, expected_data):
+        self.assertEqual(response.status_code, expected_code)
 
-        encoded_data = json.loads(response.data)
-
-        self.assertIsInstance(encoded_data, unicode)
-        self.assertEqual(encoded_data, expected_data)
-
-
-class MockedPost(object):
-    def list(self):
-        return []
-
-    def read(self, post_id):
-        return {'id': post_id}
-
-    def save(self, *args):
-        return {}
-
-    def update(self, post_id, *args):
-        return {'id': post_id}
-
-    def delete(self, *args):
-        return {'success': True}
+        self.assertIsInstance(response.data, str)
+        self.assertEqual(response.data, expected_data)

@@ -20,14 +20,11 @@ def listing():
 
     :return list:
     """
-    post = Post(Fs.get())
+    model = Post(Fs.get())
 
-    try:
-        posts = post.list()
-    except Exception:
-        return Response.failure(errors.UNKNOWN, 500)
+    posts = model.list()
 
-    return Response.success(json.dumps(posts))
+    return Response.success(posts)
 
 
 @post.route('/<post_id>', methods=['GET'])
@@ -37,17 +34,14 @@ def get(post_id):
     :param str post_id:
     :return dict:
     """
-    fs = Fs.get()
-    post = Post(fs)
+    model = Post(Fs.get())
 
     try:
-        response = post.read(post_id)
+        response = model.read(post_id)
     except NotExistsException:
-        return Response.failure(errors.DOES_NOT_EXIST, 404)
-    except Exception:
-        return Response.failure(errors.UNKNOWN, 500)
+        return Response.failure(errors.DOES_NOT_EXIST, code=404)
 
-    return Response.success(json.dumps(response, cls=PostSerializer))
+    return Response.success(response, serializer=PostSerializer)
 
 
 @post.route('/', methods=['POST'])
@@ -56,14 +50,11 @@ def create():
 
     :return dict:
     """
-    post = Post(Fs.get())
+    model = Post(Fs.get())
 
-    try:
-        response = post.save(**Request.dict())
-    except Exception:
-        return Response.failure(errors.UNKNOWN, 500)
+    response = model.save(**Request.dict())
 
-    return Response.success(json.dumps(response, cls=PostSerializer))
+    return Response.success(response, serializer=PostSerializer)
 
 
 @post.route('/<post_id>', methods=['PUT'])
@@ -73,16 +64,14 @@ def update(post_id):
     :param str post_id:
     :return dict:
     """
-    post = Post(Fs.get())
+    model = Post(Fs.get())
 
     try:
-        response = post.update(post_id, **Request.dict())
+        response = model.update(post_id, **Request.dict())
     except NotExistsException:
         return Response.failure(errors.DOES_NOT_EXIST, 404)
-    except Exception:
-        return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response, cls=PostSerializer))
+    return Response.success(response, serializer=PostSerializer)
 
 
 @post.route('/<post_id>', methods=['DELETE'])
@@ -92,16 +81,14 @@ def delete(post_id):
     :param str post_id:
     :return dict:
     """
-    post = Post(Fs.get())
+    model = Post(Fs.get())
 
     try:
-        response = post.delete(post_id)
+        response = model.delete(post_id)
     except NotExistsException:
         return Response.failure(errors.DOES_NOT_EXIST, 404)
-    except Exception:
-        return Response.failure(errors.UNKNOWN, 500)
 
-    return Response.success(json.dumps(response, cls=PostSerializer))
+    return Response.success(response, serializer=PostSerializer)
 
 
 @post.route('/', methods=['PUT'])

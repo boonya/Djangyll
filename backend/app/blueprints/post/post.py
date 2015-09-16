@@ -36,13 +36,12 @@ class Post(object):
         post['id'] = post_id
         return post
 
-    def save(self, **kwargs):
+    def save(self, post_id, **kwargs):
         """Create new file of article.
 
         :param kwargs:
         :return dict:
         """
-        post_id = kwargs['id']
         post = PostModel(**kwargs)
 
         if post_id in self.file_system.list():
@@ -79,26 +78,22 @@ class Post(object):
 
 
 class PostModel(object):
-    attributes = ('id', 'layout', 'title', 'slug', 'date', 'category',
-                  'cat_slug', 'featured', 'language', 'permalink', 'body')
+    attributes = ('layout', 'permalink', 'title', 'body')
+    unicode = ('title', 'body')
+    data = {}
 
     def __init__(self, **kwargs):
         for attr in self.attributes:
-            value = None
-            if attr in kwargs:
-                value = kwargs[attr]
-            self.__setitem__(attr, value)
-
-    def __delitem__(self, key):
-        self.__delattr__(key)
+            self.data[attr] = kwargs.get(attr, None)
 
     def __getitem__(self, key):
-        return self.__getattribute__(key)
+        return self.data.get(key, None)
 
     def __setitem__(self, key, value):
-        if isinstance(value, str):
-            value = unicode(value, "utf-8")
-        self.__setattr__(key, value)
+        self.data[key] = value
+
+    def __dict__(self):
+        return self.data
 
     def update(self, **kwargs):
         for attr in self.attributes:
@@ -117,7 +112,8 @@ class PostModel(object):
         if 3 != len(entries):
             raise BadFile("The content is invalid.")
 
-        return PostModel(body=entries[2], **yaml.load(entries[1]))
+        return PostModel(body=unicode(entries[2], "utf-8"),
+                         **yaml.load(entries[1]))
 
     @staticmethod
     def encode(model):
@@ -129,13 +125,15 @@ class PostModel(object):
         if not isinstance(model, PostModel):
             raise ValueError("Is an instance of unexpected class.")
 
-        meta = {key: value for key, value in model.__dict__.iteritems() if
-                'body' not in key}
+        meta_dict = {key: value for key, value in model.__dict__().iteritems()
+                     if key not in ('body', 'id')}
 
-        body = model.__dict__.get('body', None)
-        meta = yaml.dump(meta, default_flow_style=False) + "\n"
+        meta = yaml.dump(meta_dict, default_flow_style=False, encoding=None,
+                         allow_unicode=True)
 
-        return "---\n".join(['', meta, body])
+        result = "---\n".join(['', meta, model['body']]).encode('utf8')
+
+        return result
 
 
 class PostSerializer(Serializer):
@@ -143,11 +141,7 @@ class PostSerializer(Serializer):
         if not isinstance(obj, PostModel):
             return super(PostSerializer, self).default(obj)
 
-        # @TODO: Need to make more common.
-        if obj['date']:
-            obj['date'] = obj['date'].isoformat()
-
-        return obj.__dict__
+        return obj.__dict__()
 
 
 class BadFile(Exception):

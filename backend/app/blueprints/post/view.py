@@ -93,7 +93,7 @@ def bulk_update():
 
     :return list:
     """
-    return Response.success("Bulk update")
+    raise NotImplemented("Bulk update")
 
 
 @post.route('/', methods=['DELETE'])
@@ -102,4 +102,4 @@ def bulk_delete():
 
     :return list:
     """
-    return Response.success("Bulk delete")
+    raise NotImplemented("Bulk delete")

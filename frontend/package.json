@@ -1,0 +1,22 @@
+{
+  "name": "djangyll",
+  "version": "1.0.0",
+  "description": "Menagement dashboard",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sergii boonya Buinytskyi",
+  "license": "MIT",
+  "devDependencies": {
+    "connect": "^3.4.0",
+    "gulp": "^3.9.0",
+    "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "angular": "^1.4.6",
+    "angular-cookies": "^1.4.6",
+    "angular-resource": "^1.4.6",
+    "angular-route": "^1.4.6"
+  }
+}

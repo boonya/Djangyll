@@ -6,6 +6,8 @@ __author__ = 'boonya'
 from app import create_app
 import unittest
 import mock
+import json
+from app.blueprints.post.post import PostModel
 from app.utils.fs.exception import NotExistsException
 
 
@@ -16,26 +18,39 @@ class PostApiTestCase(unittest.TestCase):
 
     error_404_response = '{"reason": "not_found"}'
 
+    mocked_post_data = {'id': 'some-post.md'}
+
+    patchable = {'fs': 'app.blueprints.post.view.Fs',
+                 'post': 'app.blueprints.post.view.Post',
+                 'serializer': 'app.blueprints.post.view.PostSerializer'
+                 }
+
     def setUp(self):
         """Start patching objects."""
-        self.patcher_fs = mock.patch('app.blueprints.post.view.Fs')
-        self.patcher_post = mock.patch('app.blueprints.post.view.Post')
-        self.mocked_fs = self.patcher_fs.start()
-        self.mocked_post = self.patcher_post.start()
-        self.mocked_fs.get.return_value = None
+        self.patcher = self.mocked = {}
 
-        mocked_post = self.mocked_post()
+        for name, path in self.patchable.iteritems():
+            self.patcher[name] = mock.patch(path)
+            self.mocked[name] = self.patcher[name].start()
 
+        self.mocked['fs'].get.return_value = None
+
+        mocked_post = self.mocked['post']()
         mocked_post.list.return_value = []
-        mocked_post.read.return_value = {'id': 'some-post.md'}
-        mocked_post.save.return_value = {'id': 'some-post.md'}
-        mocked_post.update.return_value = {'id': 'some-post.md'}
         mocked_post.delete.return_value = {'success': True}
+        mocked_post.read.return_value =\
+            mocked_post.save.return_value =\
+            mocked_post.update.return_value =\
+            PostModel(**self.mocked_post_data)
+
+        mocked_serializer = self.mocked['serializer']()
+        mocked_serializer.encode.return_value = json.dumps(
+            self.mocked_post_data)
 
     def tearDown(self):
         """Stop patching objects."""
-        self.patcher_fs.stop()
-        self.patcher_post.stop()
+        for name in self.patcher.iterkeys():
+            self.patcher[name].stop()
 
     def test_listing(self):
         response = self.client.get('/post/')
@@ -45,10 +60,11 @@ class PostApiTestCase(unittest.TestCase):
     def test_get(self):
         response = self.client.get('/post/some-post.md')
 
-        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
+        self._compare_assertions(response, 200,
+                                 json.dumps(self.mocked_post_data))
 
     def test_get_404(self):
-        self.mocked_post().read.side_effect = NotExistsException('foo')
+        self.mocked['post']().read.side_effect = NotExistsException('foo')
 
         response = self.client.get('/post/unknown-post.md')
 
@@ -57,15 +73,17 @@ class PostApiTestCase(unittest.TestCase):
     def test_create(self):
         response = self.client.post('/post/', data={})
 
-        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
+        self._compare_assertions(response, 200,
+                                 json.dumps(self.mocked_post_data))
 
     def test_update(self):
         response = self.client.put('/post/some-post.md', data={})
 
-        self._compare_assertions(response, 200, '{"id": "some-post.md"}')
+        self._compare_assertions(response, 200,
+                                 json.dumps(self.mocked_post_data))
 
     def test_update_404(self):
-        self.mocked_post().update.side_effect = NotExistsException('foo')
+        self.mocked['post']().update.side_effect = NotExistsException('foo')
 
         response = self.client.put('/post/unknown-post.md', data={})
 
@@ -77,7 +95,7 @@ class PostApiTestCase(unittest.TestCase):
         self._compare_assertions(response, 200, '{"success": true}')
 
     def test_delete_404(self):
-        self.mocked_post().delete.side_effect = NotExistsException('foo')
+        self.mocked['post']().delete.side_effect = NotExistsException('foo')
 
         response = self.client.delete('/post/unknown-post.md')
 

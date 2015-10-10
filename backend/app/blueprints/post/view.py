@@ -80,11 +80,11 @@ def delete(post_id):
     model = Post(Fs.get())
 
     try:
-        response = model.delete(post_id)
+        model.delete(post_id)
     except NotExistsException:
         raise NotFound()
 
-    return Response.success(response, serializer=PostSerializer)
+    return Response.success({'success': True})
 
 
 @post.route('/', methods=['PUT'])

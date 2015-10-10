@@ -3,11 +3,9 @@ __author__ = 'boonya'
 
 import json
 from flask import make_response
-from .serializer import Serializer
 
 
 class Response(object):
-
     """Response wrapper helper."""
 
     @staticmethod
@@ -19,7 +17,7 @@ class Response(object):
         :return ResponseBase:
         """
 
-        if isinstance(serializer, Serializer):
+        if serializer:
             data = json.dumps(data, cls=serializer)
         else:
             data = json.dumps(data)

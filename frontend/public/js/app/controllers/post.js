@@ -12,7 +12,8 @@ var PostController = function ($scope, $routeParams, $rootScope, ApiCore, Post) 
 
         Post.get($scope.id)
             .then(function (data) {
-                $scope.post = data;
+                $scope.post.title = data.title;
+                $scope.post.body = markdown.toHTML(data.body);
             })
             .catch(ApiCore.throwApiError)
             .finally(function () {

@@ -5,7 +5,7 @@ var appName = 'Djangyll';
 var Controllers = angular.module(appName + '.controllers', []);
 var Services = angular.module(appName + '.services', []);
 var Directives = angular.module(appName + '.directives', []);
-//var Filters = angular.module(appName + '.filters', []);
+var Filters = angular.module(appName + '.filters', []);
 
 // Declare app level module which depends on controllers, services and directives modules
 var Djangyll = angular.module(appName,
@@ -13,7 +13,7 @@ var Djangyll = angular.module(appName,
         appName + '.services',
         appName + '.directives',
         appName + '.controllers',
-        //appName + '.filters',
+        appName + '.filters',
         'ngRoute',
         'ngCookies',
         'ngResource'

@@ -1,13 +1,17 @@
 {
   "name": "djangyll",
   "version": "1.0.0",
-  "description": "Menagement dashboard",
-  "main": "main.js",
+  "description": "File-based CMS for blogs",
+  "main": "gulpfile.js",
+  "author": "Sergii [boonya] Buinytskyi",
+  "license": "MIT",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sergii boonya Buinytskyi",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:boonya/Djangyll.git"
+  },
   "devDependencies": {
     "connect": "^3.4.0",
     "gulp": "^3.9.0",

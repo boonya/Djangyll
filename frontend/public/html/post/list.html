@@ -1,1 +1,11 @@
-<h1>Listing of posts</h1>
+<Page-Heading></Page-Heading>
+
+<div class="row" ng-init="list()">
+    <div class="col-lg-12">
+        <ul ng-show="posts">
+            <li ng-repeat="id in posts"><a ng-href="#/post/{{id}}">{{id}}</a></li>
+        </ul>
+        <p ng-hide="posts">Nothing to show</p>
+    </div>
+</div>
+<!-- /.row -->

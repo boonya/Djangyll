@@ -72,8 +72,7 @@ def error_pages(app):
 
 def allow_cross_origin(app):
     @app.after_request
-    @cross_origin(headers=['x-auth-token', 'Content-Type'],
-                  methods=['PATCH', 'DELETE', 'PUT'])
+    @cross_origin(**common.cors)
     def after_request(response):
         """Apply CORS for all requests.
 

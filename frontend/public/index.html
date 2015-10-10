@@ -19,6 +19,8 @@
     <!-- Custom CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
 
+    <link href="css/preloader.css" rel="stylesheet">
+
     <!-- Custom Fonts -->
     <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css">
@@ -30,13 +32,25 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Angular libs -->
     <script src="js/lib/angular.min.js"></script>
     <script src="js/lib/angular-cookies.min.js"></script>
     <script src="js/lib/angular-resource.min.js"></script>
     <script src="js/lib/angular-route.min.js"></script>
 
+    <!-- NgApp core -->
     <script src="js/app.js"></script>
+    <script src="js/app/api_core.js"></script>
     <script src="js/app/routing.js"></script>
+
+    <!-- Angular directives -->
+    <script src="js/app/directives/page_heading.js"></script>
+    <script src="js/app/directives/breadcrumbs.js"></script>
+
+    <!-- Angular services -->
+    <script src="js/app/services/post.js"></script>
+
+    <!-- Angular controllers -->
     <script src="js/app/controllers/global.js"></script>
     <script src="js/app/controllers/post-list.js"></script>
     <script src="js/app/controllers/post.js"></script>
@@ -255,30 +269,7 @@
     <div id="page-wrapper">
 
         <div class="container-fluid">
-
-            <!-- Page Heading -->
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">
-                        Dashboard
-                        <small>Statistics Overview</small>
-                    </h1>
-                    <ol class="breadcrumb">
-                        <li class="active">
-                            <i class="fa fa-dashboard"></i> Dashboard
-                        </li>
-                    </ol>
-                </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="main-content" ng-view=""></div>
-                </div>
-            </div>
-            <!-- /.row -->
-
+            <ng-view></ng-view>
         </div>
         <!-- /.container-fluid -->
 

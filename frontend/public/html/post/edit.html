@@ -1,0 +1,20 @@
+<page-heading></page-heading>
+
+<div class="row" ng-init="init()">
+    <div class="col-lg-12">
+        <input type="text"
+               class="form-control input-lg"
+               placeholder="Page title"
+               ng-model="post.title" />
+
+        <text-angular ng-model="post.body"></text-angular>
+
+        <textarea id="additionalParameters"
+                  class="form-control input-sm"
+                  ng-model="post.additional"
+                  placeholder="Additional parameters (YAML data)"></textarea>
+
+        <button class="btn btn-default" ng-click="save()">Save</button>
+    </div>
+</div>
+<!-- /.row -->

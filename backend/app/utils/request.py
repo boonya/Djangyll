@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'boonya'
 
+import json
 from flask import request
 
 
@@ -14,7 +15,12 @@ class Request(object):
         :param mixed key:
         :return mixed:
         """
-        return request.form.get(key, None)
+        if request.data:
+            return json.loads(request.data).get(key, None)
+        elif request.form.__len__:
+            return request.form.get(key, None)
+        else:
+            return None
 
     @staticmethod
     def dict():
@@ -22,5 +28,10 @@ class Request(object):
 
         :return dict:
         """
-        return dict(
-            (key, request.form.get(key, None)) for key in request.form.keys())
+        if request.data:
+            return json.loads(request.data)
+        elif request.form.__len__:
+            return dict((key, request.form.get(key, None)) for key in
+                        request.form.iterkeys())
+        else:
+            return {}

@@ -1,0 +1,31 @@
+{
+  "name": "djangyll",
+  "version": "1.0.0",
+  "description": "File-based CMS for blogs",
+  "main": "gulpfile.js",
+  "author": "Sergii [boonya] Buinytskyi",
+  "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:boonya/Djangyll.git"
+  },
+  "devDependencies": {
+    "connect": "^3.4.0",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-webserver": "^0.9.1"
+  },
+  "dependencies": {
+    "angular": "^1.4.6",
+    "angular-cookies": "^1.4.6",
+    "angular-resource": "^1.4.6",
+    "angular-route": "^1.4.6",
+    "bootstrap": "^3.3.5",
+    "jquery": "^2.1.4",
+    "markdown": "^0.5.0",
+    "textangular": "^1.4.6"
+  }
+}

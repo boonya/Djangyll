@@ -1,5 +1,8 @@
 var gulp = require('gulp'),
-    webserver = require('gulp-webserver');
+    webserver = require('gulp-webserver'),
+    concat = require('gulp-concat');
+
+var jsFiles = cssFiles = [];
 
 gulp.task('webserver', function () {
     gulp.src('public')
@@ -10,23 +13,49 @@ gulp.task('webserver', function () {
         }));
 });
 
-gulp.task('copy-css', function () {
-    gulp.src(['./startbootstrap-sb-admin/css/bootstrap.min.css',
-        './startbootstrap-sb-admin/css/sb-admin.css'])
-        .pipe(gulp.dest('./public/css'));
+gulp.task('concat-css', function () {
+    cssFiles = ['./node_modules/bootstrap/dist/css/bootstrap.min.css',
+        './public/css/sb-admin.css',
+        './public/css/preloader.css',
+        './node_modules/textangular/dist/textAngular.css'];
+
+    gulp.src(cssFiles)
+        .pipe(concat('common.css'))
+        .pipe(gulp.dest('./public/css/'));
 });
 
-gulp.task('copy-js', function () {
-    gulp.src(['./startbootstrap-sb-admin/js/jquery.js',
-        './startbootstrap-sb-admin/js/bootstrap.min.js'])
-        .pipe(gulp.dest('./public/js/lib'));
-
-    gulp.src(['./node_modules/angular/angular.min.js',
+gulp.task('concat-js', function () {
+    var libs = ['./startbootstrap-sb-admin/js/jquery.js',
+        './startbootstrap-sb-admin/js/bootstrap.min.js',
+        './node_modules/angular/angular.min.js',
         './node_modules/angular-cookies/angular-cookies.min.js',
         './node_modules/angular-resource/angular-resource.min.js',
         './node_modules/angular-route/angular-route.min.js',
-        './node_modules/markdown/lib/markdown.js'])
-        .pipe(gulp.dest('./public/js/lib'));
+        './node_modules/markdown/lib/markdown.js',
+        './node_modules/textangular/dist/textAngular-rangy.min.js',
+        './node_modules/textangular/dist/textAngular-sanitize.min.js',
+        './node_modules/textangular/dist/textAngular.min.js'];
+
+    var core = ['./public/js/app/init.js',
+        './public/js/app/api_core.js',
+        './public/js/app/routing.js'];
+
+    var directives = ['./public/js/app/directives/page_heading.js',
+        './public/js/app/directives/breadcrumbs.js'];
+
+    var filters = ['./public/js/app/filters/markdown.js'];
+
+    var services = ['./public/js/app/services/post.js'];
+
+    var controllers = ['./public/js/app/controllers/global.js',
+        './public/js/app/controllers/post-list.js',
+        './public/js/app/controllers/post.js'];
+
+    jsFiles = [].concat(libs, core, directives, filters, services, controllers);
+
+    gulp.src(jsFiles)
+        .pipe(concat('common.js'))
+        .pipe(gulp.dest('./public/js/'));
 });
 
 gulp.task('copy-fonts', function () {
@@ -37,14 +66,23 @@ gulp.task('copy-fonts', function () {
         .pipe(gulp.dest('./public/font-awesome/css'));
 });
 
-gulp.task('build', function () {
-    gulp.run('copy-fonts');
-    gulp.run('copy-css');
-    gulp.run('copy-js');
+gulp.task('concat', function () {
+    gulp.run('concat-js');
 });
 
-// Запуск сервера разработки gulp watch
+gulp.task('build', function () {
+    gulp.run('copy-fonts');
+    gulp.run('concat-css');
+    gulp.run('concat-js');
+});
+
 gulp.task('watch', function () {
     gulp.run('build');
+
+    var observable = [].concat(jsFiles, cssFiles);
+    gulp.watch(observable, function() {
+        gulp.run('build');
+    });
+
     gulp.run('webserver');
 });

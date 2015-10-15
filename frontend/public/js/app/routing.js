@@ -8,8 +8,8 @@ Djangyll.config(['$routeProvider',
                 controller: 'PostListController'
             }).
             when('/post/:id', {
-                templateUrl: 'html/post/view.html',
-                controller: 'PostController'
+                templateUrl: 'html/post/edit.html',
+                controller: 'PostEditController'
             }).
             otherwise({
                 redirectTo: '/post-list/'

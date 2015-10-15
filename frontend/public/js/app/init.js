@@ -16,7 +16,8 @@ var Djangyll = angular.module(appName,
         appName + '.filters',
         'ngRoute',
         'ngCookies',
-        'ngResource'
+        'ngResource',
+        'textAngular'
     ]
 );
 

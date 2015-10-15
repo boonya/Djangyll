@@ -1,7 +1,6 @@
 'use strict';
 
-//var ApiCoreFactory = function ($modal, $log) {
-var ApiCoreFactory = function ($log) {
+var ApiCoreFactory = function ($resource, $log) {
     var ApiCore = function () {
         var self = this,
             host = 'http://localhost:5000/';
@@ -19,38 +18,27 @@ var ApiCoreFactory = function ($log) {
 
             if (403 == error.status) {
                 location.href = '/accounts/login/';
-                return;
             }
-
-            var size;
-            if (angular.isDefined(error.data)) {
-                size = 'lg'
-            }
-
-            //$modal.open({
-            //    windowClass: 'api-error',
-            //    templateUrl: 'html/api_error.html',
-            //    controller: function ($scope, $modalInstance) {
-            //        $scope.error = error;
-            //        $scope.close = function () {
-            //            $modalInstance.dismiss('close');
-            //        };
-            //    },
-            //    size: size
-            //});
         };
 
-        // public members
+        self.resource = function (url, paramDefaults, actions, options) {
+            var extendedActions = angular.extend({}, {update: {method:'PUT'}},
+                actions);
+
+            return $resource(self.getHost(url), paramDefaults,
+                extendedActions, options);
+        };
+
         return {
             getHost: self.getHost,
-            throwApiError: self.throwApiError
+            throwApiError: self.throwApiError,
+            resource: self.resource
         };
     };
 
     return new ApiCore();
 };
 
-//ApiCoreFactory.$inject = ['$modal', '$log'];
-ApiCoreFactory.$inject = ['$log'];
+ApiCoreFactory.$inject = ['$resource', '$log'];
 
 Services.factory('ApiCore', ApiCoreFactory);

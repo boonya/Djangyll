@@ -1,11 +1,11 @@
 'use strict';
 
-var PostService = function ($resource, ApiCore) {
+var PostService = function (ApiCore) {
     function Post() {
 
         var self = this;
 
-        var Resource = $resource(ApiCore.getHost('/post/:id'), {
+        var Resource = ApiCore.resource('/post/:id', {
             id: '@id'
         });
 
@@ -18,18 +18,17 @@ var PostService = function ($resource, ApiCore) {
         };
 
         self.create = function (data) {
-            throw new Exception("Not implemented yet.");
+            return Resource.save(data).$promise;
         };
 
         self.update = function (id, data) {
-            throw new Exception("Not implemented yet.");
+            return Resource.update(angular.extend({}, data, {id: id})).$promise;
         };
 
         self.remove = function (id) {
-            throw new Exception("Not implemented yet.");
+            return Resource.remove({id: id}).$promise;
         };
 
-        // export public methods
         return {
             get: self.get,
             list: self.list,
@@ -42,6 +41,6 @@ var PostService = function ($resource, ApiCore) {
     return new Post();
 };
 
-PostService.$inject = ['$resource', 'ApiCore'];
+PostService.$inject = ['ApiCore'];
 
 Services.factory('Post', PostService);

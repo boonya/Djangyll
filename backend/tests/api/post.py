@@ -18,7 +18,14 @@ class PostApiTestCase(unittest.TestCase):
 
     error_404_response = '{"reason": "not_found"}'
 
-    mocked_post_data = {'id': 'some-post.md'}
+    mocked_id = 'some-post.md'
+
+    mocked_request_data = {'title': 'title',
+                           'body': 'body'}
+
+    mocked_post_data = {'id': mocked_id,
+                        'title': 'title',
+                        'body': 'body'}
 
     patchable = {'fs': 'app.blueprints.post.view.Fs',
                  'post': 'app.blueprints.post.view.Post',
@@ -38,9 +45,9 @@ class PostApiTestCase(unittest.TestCase):
         mocked_post = self.mocked['post']()
         mocked_post.list.return_value = []
         mocked_post.delete.return_value = {'success': True}
-        mocked_post.read.return_value =\
-            mocked_post.save.return_value =\
-            mocked_post.update.return_value =\
+        mocked_post.read.return_value = \
+            mocked_post.save.return_value = \
+            mocked_post.update.return_value = \
             PostModel(**self.mocked_post_data)
 
         mocked_serializer = self.mocked['serializer']()
@@ -71,13 +78,14 @@ class PostApiTestCase(unittest.TestCase):
         self._compare_assertions(response, 404, self.error_404_response)
 
     def test_create(self):
-        response = self.client.post('/post/', data={})
+        response = self.client.post('/post/', data=self.mocked_request_data)
 
         self._compare_assertions(response, 200,
                                  json.dumps(self.mocked_post_data))
 
     def test_update(self):
-        response = self.client.put('/post/some-post.md', data={})
+        response = self.client.put('/post/some-post.md',
+                                   data=self.mocked_request_data)
 
         self._compare_assertions(response, 200,
                                  json.dumps(self.mocked_post_data))
@@ -85,7 +93,8 @@ class PostApiTestCase(unittest.TestCase):
     def test_update_404(self):
         self.mocked['post']().update.side_effect = NotExistsException('foo')
 
-        response = self.client.put('/post/unknown-post.md', data={})
+        response = self.client.put('/post/unknown-post.md',
+                                   data=self.mocked_request_data)
 
         self._compare_assertions(response, 404, self.error_404_response)
 

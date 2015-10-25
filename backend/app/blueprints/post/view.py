@@ -4,9 +4,13 @@ __author__ = 'boonya'
 from flask import Blueprint
 from ...utils.request import Request
 from ...utils.response import Response
-from ...utils.fs import Fs
-from ...utils.fs.exception import NotExistsException
-from .post import Post
+# from ...utils.fs import Fs
+# from ...utils.fs.exception import NotExistsException
+
+from ...storage import Storage
+from ...storage import NotExistsException
+
+# from .post import PostReader
 from .post import PostSerializer
 from werkzeug.exceptions import NotFound
 
@@ -19,9 +23,9 @@ def listing():
 
     :return list:
     """
-    model = Post(Fs.get())
-
-    return Response.success(model.list())
+    storage = Storage()
+    result = storage.listing()
+    return Response.success(result)
 
 
 @post.route('/<post_id>', methods=['GET'])
@@ -31,14 +35,14 @@ def get(post_id):
     :param str post_id:
     :return dict:
     """
-    model = Post(Fs.get())
+    reader = Storage()
 
     try:
-        response = model.read(post_id)
+        result = reader.read(post_id)
     except NotExistsException:
         raise NotFound()
 
-    return Response.success(response, serializer=PostSerializer)
+    return Response.success(result, serializer=PostSerializer)
 
 
 @post.route('/', methods=['POST'])
@@ -47,10 +51,10 @@ def create():
 
     :return dict:
     """
-    model = Post(Fs.get())
-
-    return Response.success(model.save(**Request.dict()),
-                            serializer=PostSerializer)
+    reader = Storage()
+    data = Request.dict()
+    result = reader.save(**data)
+    return Response.success(result, serializer=PostSerializer)
 
 
 @post.route('/<post_id>', methods=['PUT'])
@@ -60,14 +64,15 @@ def update(post_id):
     :param str post_id:
     :return dict:
     """
-    model = Post(Fs.get())
+    reader = Storage()
+    data = Request.dict()
 
     try:
-        response = model.update(post_id, **Request.dict())
+        result = reader.update(post_id, **data)
     except NotExistsException:
         raise NotFound()
 
-    return Response.success(response, serializer=PostSerializer)
+    return Response.success(result, serializer=PostSerializer)
 
 
 @post.route('/<post_id>', methods=['DELETE'])
@@ -77,10 +82,10 @@ def delete(post_id):
     :param str post_id:
     :return dict:
     """
-    model = Post(Fs.get())
+    reader = Storage()
 
     try:
-        model.delete(post_id)
+        reader.delete(post_id)
     except NotExistsException:
         raise NotFound()
 
@@ -93,7 +98,7 @@ def bulk_update():
 
     :return list:
     """
-    raise NotImplemented("Bulk update")
+    raise NotImplementedError("Bulk update")
 
 
 @post.route('/', methods=['DELETE'])
@@ -102,4 +107,4 @@ def bulk_delete():
 
     :return list:
     """
-    raise NotImplemented("Bulk delete")
+    raise NotImplementedError("Bulk delete")

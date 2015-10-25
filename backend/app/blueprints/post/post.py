@@ -6,7 +6,7 @@ import yaml
 from ...utils.serializer import Serializer
 
 
-class Post(object):
+class PostReader(object):
     """Files reader class."""
 
     def __init__(self, fs_adapter):

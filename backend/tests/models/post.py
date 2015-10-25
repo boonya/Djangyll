@@ -5,7 +5,7 @@ __author__ = 'boonya'
 
 import unittest
 import json
-from app.blueprints.post.post import Post, PostModel, PostSerializer
+from app.blueprints.post.post import PostReader, PostModel, PostSerializer
 from fixtures.post import MockedFs, post_raw, post_data, post_json
 
 
@@ -14,7 +14,7 @@ class PostTestCase(unittest.TestCase):
 
     def setUp(self):
         """Start patching objects."""
-        self.post = Post(MockedFs())
+        self.post = PostReader(MockedFs())
 
     def tearDown(self):
         """Stop patching objects."""

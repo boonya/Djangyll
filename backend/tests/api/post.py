@@ -8,7 +8,8 @@ import unittest
 import mock
 import json
 from app.blueprints.post.post import PostModel
-from app.utils.fs.exception import NotExistsException
+# from app.utils.fs.exception import NotExistsException
+from app.storage import NotExistsException
 
 
 class PostApiTestCase(unittest.TestCase):
@@ -27,8 +28,7 @@ class PostApiTestCase(unittest.TestCase):
                         'title': 'title',
                         'body': 'body'}
 
-    patchable = {'fs': 'app.blueprints.post.view.Fs',
-                 'post': 'app.blueprints.post.view.Post',
+    patchable = {'storage': 'app.storage.Storage',
                  'serializer': 'app.blueprints.post.view.PostSerializer'
                  }
 
@@ -40,14 +40,12 @@ class PostApiTestCase(unittest.TestCase):
             self.patcher[name] = mock.patch(path)
             self.mocked[name] = self.patcher[name].start()
 
-        self.mocked['fs'].get.return_value = None
-
-        mocked_post = self.mocked['post']()
-        mocked_post.list.return_value = []
-        mocked_post.delete.return_value = {'success': True}
-        mocked_post.read.return_value = \
-            mocked_post.save.return_value = \
-            mocked_post.update.return_value = \
+        mocked_storage = self.mocked['storage']()
+        mocked_storage.listing.return_value = []
+        mocked_storage.delete.return_value = {'success': True}
+        mocked_storage.read.return_value = \
+            mocked_storage.create.return_value = \
+            mocked_storage.update.return_value = \
             PostModel(**self.mocked_post_data)
 
         mocked_serializer = self.mocked['serializer']()
@@ -71,7 +69,7 @@ class PostApiTestCase(unittest.TestCase):
                                  json.dumps(self.mocked_post_data))
 
     def test_get_404(self):
-        self.mocked['post']().read.side_effect = NotExistsException('foo')
+        self.mocked['storage']().read.side_effect = NotExistsException('foo')
 
         response = self.client.get('/post/unknown-post.md')
 
@@ -91,7 +89,7 @@ class PostApiTestCase(unittest.TestCase):
                                  json.dumps(self.mocked_post_data))
 
     def test_update_404(self):
-        self.mocked['post']().update.side_effect = NotExistsException('foo')
+        self.mocked['storage']().update.side_effect = NotExistsException('foo')
 
         response = self.client.put('/post/unknown-post.md',
                                    data=self.mocked_request_data)
@@ -104,7 +102,7 @@ class PostApiTestCase(unittest.TestCase):
         self._compare_assertions(response, 200, '{"success": true}')
 
     def test_delete_404(self):
-        self.mocked['post']().delete.side_effect = NotExistsException('foo')
+        self.mocked['storage']().delete.side_effect = NotExistsException('foo')
 
         response = self.client.delete('/post/unknown-post.md')
 

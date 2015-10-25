@@ -15,7 +15,12 @@ app = {
 
 cors = {}
 
-sites = {}
+sites = {
+    'boonya': {
+        'fs': 'direct',
+        'path': 'some-path'
+    }
+}
 
 """
 LOCAL SETTINGS.

@@ -3,6 +3,7 @@ __author__ = 'boonya'
 
 import unittest
 from .api.post import PostApiTestCase
+from .storage import StorageTestCase
 from .models.post import PostTestCase, PostModelTestCase, \
     PostSerializerTestCase
 from .utils.fs.direct import DirectTestCase
@@ -12,7 +13,7 @@ class TestRunner(object):
     runner = None
 
     def create_app(self):
-        self.runner = unittest.TextTestRunner(verbosity=2)
+        self.runner = unittest.TextTestRunner(verbosity=3)
         self._create_suite()
         return self
 
@@ -22,8 +23,10 @@ class TestRunner(object):
     def _create_suite(self):
         loader = unittest.TestLoader()
 
-        test_cases = [DirectTestCase, PostTestCase, PostModelTestCase,
-                      PostSerializerTestCase, PostApiTestCase]
+        # test_cases = [DirectTestCase, PostTestCase, PostModelTestCase,
+        #               PostSerializerTestCase, PostApiTestCase]
+
+        test_cases = [StorageTestCase]
 
         suite = []
         for case in test_cases:
